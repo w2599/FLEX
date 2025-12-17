@@ -51,7 +51,11 @@
     CGFloat verticalPadding = [[self class] verticalPadding];
     CGFloat dividerLineHeight = [[self class] dividerLineHeight];
     
-    CGFloat originY = verticalPadding;
+    CGFloat topInset = 0.0;
+    if (@available(iOS 11.0, *)) {
+        topInset = self.safeAreaInsets.top;
+    }
+    CGFloat originY = verticalPadding + topInset;
     CGFloat originX = horizontalPadding;
     CGFloat contentWidth = self.bounds.size.width - 2.0 * horizontalPadding;
     CGSize constrainSize = CGSizeMake(contentWidth, CGFLOAT_MAX);
@@ -146,12 +150,18 @@
     CGFloat horizontalPadding = [[self class] horizontalPadding];
     CGFloat verticalPadding = [[self class] verticalPadding];
     CGFloat dividerLineHeight = [[self class] dividerLineHeight];
-    
+    CGFloat topInset = 0.0;
+    CGFloat bottomInset = 0.0;
+    if (@available(iOS 11.0, *)) {
+        topInset = self.safeAreaInsets.top;
+        bottomInset = self.safeAreaInsets.bottom;
+    }
+
     CGFloat height = 0;
     CGFloat availableWidth = size.width - 2.0 * horizontalPadding;
     CGSize constrainSize = CGSizeMake(availableWidth, CGFLOAT_MAX);
     
-    height += verticalPadding;
+    height += verticalPadding + topInset;
     height += ceil([self.targetDescriptionLabel sizeThatFits:constrainSize].height);
     height += verticalPadding;
     height += dividerLineHeight;
@@ -165,7 +175,8 @@
         height += [inputView sizeThatFits:constrainSize].height;
         height += verticalPadding;
     }
-    
+    height += bottomInset;
+
     return CGSizeMake(size.width, height);
 }
 

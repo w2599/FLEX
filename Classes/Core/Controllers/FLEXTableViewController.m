@@ -231,7 +231,7 @@ CGFloat const kFLEXDebounceForExpensiveIO = 0.5;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentAutomatic;
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     
     // Toolbar

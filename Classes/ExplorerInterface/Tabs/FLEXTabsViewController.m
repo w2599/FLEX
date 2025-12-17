@@ -41,7 +41,7 @@
     self.title = @"Open Tabs";
     self.navigationController.hidesBarsOnSwipe = NO;
     self.tableView.allowsMultipleSelectionDuringEditing = YES;
-    
+    self.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentAutomatic;
     [self reloadData:NO];
 }
 
