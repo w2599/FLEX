@@ -105,6 +105,7 @@
             // I am presented on an existing navigation stack, so
             // dismiss myself and push the bookmark there
             UINavigationController *presenter = (id)self.presentingViewController;
+            presenter.modalPresentationStyle = UIModalPresentationAutomatic;
             [presenter dismissViewControllerAnimated:YES completion:^{
                 [presenter pushViewController:explorer animated:YES];
             }];

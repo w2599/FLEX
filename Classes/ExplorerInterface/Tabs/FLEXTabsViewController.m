@@ -218,6 +218,7 @@
 }
 
 - (void)addTabAndDismiss:(UINavigationController *)newTab {
+    newTab.modalPresentationStyle = UIModalPresentationAutomatic;
     FLEXExplorerViewController *presenter = self.corePresenter;
     [presenter dismissViewControllerAnimated:YES completion:^{
         [presenter presentViewController:newTab animated:YES completion:nil];
@@ -261,6 +262,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kFLEXDetailCell forIndexPath:indexPath];
     
     UINavigationController *tab = self.openTabs[indexPath.row];
+    tab.modalPresentationStyle = UIModalPresentationAutomatic;
     cell.imageView.image = self.tabSnapshots[indexPath.row];
     cell.textLabel.text = tab.topViewController.title;
     cell.detailTextLabel.text = FLEXPluralString(tab.viewControllers.count, @"pages", @"page");

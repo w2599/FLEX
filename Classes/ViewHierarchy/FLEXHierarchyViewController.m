@@ -58,7 +58,7 @@ typedef NS_ENUM(NSUInteger, FLEXHierarchyViewMode) {
             _snapshotViewController = [FHSViewController snapshotWindows:allWindows];
         }
 
-        self.modalPresentationStyle = UIModalPresentationFullScreen;
+        self.modalPresentationStyle = UIModalPresentationAutomatic;
     }
 
     return self;

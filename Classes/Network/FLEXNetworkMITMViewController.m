@@ -156,6 +156,7 @@ typedef NS_ENUM(NSInteger, FLEXNetworkObserverMode) {
     
     // This is not a FLEXNavigationController because it is not intended as a new tab
     UIViewController *nav = [[UINavigationController alloc] initWithRootViewController:settings];
+    nav.modalPresentationStyle = UIModalPresentationAutomatic;
     [self presentViewController:nav animated:YES completion:nil];
 }
 

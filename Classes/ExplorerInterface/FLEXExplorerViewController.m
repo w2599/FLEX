@@ -592,9 +592,12 @@ typedef NS_ENUM(NSUInteger, FLEXExplorerMode) {
         self.appMenuItems = UIMenuController.sharedMenuController.menuItems;
         
         // Don't use FLEXNavigationController because the tab viewer itself is not a tab
-        [super presentViewController:[[UINavigationController alloc]
+        
+        UINavigationController *nav = [[UINavigationController alloc]
             initWithRootViewController:[FLEXTabsViewController new]
-        ] animated:YES completion:nil];
+        ];
+        nav.modalPresentationStyle = UIModalPresentationAutomatic;
+        [super presentViewController:nav animated:YES completion:nil];
     }
 }
 

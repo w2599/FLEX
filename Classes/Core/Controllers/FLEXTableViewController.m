@@ -522,6 +522,7 @@ CGFloat const kFLEXDebounceForExpensiveIO = 0.5;
     UINavigationController *nav = [[UINavigationController alloc]
         initWithRootViewController:[FLEXBookmarksViewController new]
     ];
+    nav.modalPresentationStyle = UIModalPresentationAutomatic;
     [self presentViewController:nav animated:YES completion:nil];
 }
 
@@ -529,6 +530,7 @@ CGFloat const kFLEXDebounceForExpensiveIO = 0.5;
     UINavigationController *nav = [[UINavigationController alloc]
         initWithRootViewController:[FLEXTabsViewController new]
     ];
+    nav.modalPresentationStyle = UIModalPresentationAutomatic;
     [self presentViewController:nav animated:YES completion:nil];
 }
 

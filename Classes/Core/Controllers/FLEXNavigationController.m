@@ -30,6 +30,7 @@
 
 + (instancetype)withRootViewController:(UIViewController *)rootVC {
     FLEXNavigationController *nav = [[self alloc] initWithRootViewController:rootVC];
+    nav.modalPresentationStyle = UIModalPresentationAutomatic;
     return nav;
 }
 
