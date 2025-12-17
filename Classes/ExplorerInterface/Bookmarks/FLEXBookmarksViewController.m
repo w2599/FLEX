@@ -55,10 +55,10 @@
 }
 
 - (void)setupDefaultBarItems {
-    self.navigationItem.rightBarButtonItem = FLEXBarButtonItemSystem(Done, self, @selector(dismissAnimated));
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStyleDone target:self action:@selector(dismissAnimated)];    
     self.toolbarItems = @[
         UIBarButtonItem.flex_flexibleSpace,
-        FLEXBarButtonItemSystem(Edit, self, @selector(toggleEditing)),
+        [[UIBarButtonItem alloc] initWithTitle:@"编辑" style:UIBarButtonSystemItemEdit target:self action:@selector(toggleEditing)],
     ];
     
     // Disable editing if no bookmarks available

@@ -65,10 +65,7 @@
         initWithTitle:@"粘贴" style:UIBarButtonItemStyleDone
         target:self.inputTextView action:@selector(paste:)
     ];
-    UIBarButtonItem *doneItem = [[UIBarButtonItem alloc]
-        initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-        target:self.inputTextView action:@selector(resignFirstResponder)
-    ];
+    UIBarButtonItem *doneItem = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStyleDone target:self.inputTextView action:@selector(resignFirstResponder)];
     toolBar.items = @[spaceItem, pasteItem, doneItem];
     return toolBar;
 }

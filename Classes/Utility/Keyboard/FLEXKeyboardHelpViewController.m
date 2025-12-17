@@ -32,7 +32,7 @@
     self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
     
     self.title = @"模拟器快捷键";
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(donePressed:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStyleDone target:self action:@selector(donePressed:)];
 }
 
 - (void)donePressed:(id)sender {

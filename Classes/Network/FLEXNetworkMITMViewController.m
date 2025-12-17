@@ -149,9 +149,8 @@ typedef NS_ENUM(NSInteger, FLEXNetworkObserverMode) {
 
 - (void)settingsButtonTapped:(UIBarButtonItem *)sender {
     UIViewController *settings = [FLEXNetworkSettingsController new];
-    settings.navigationItem.rightBarButtonItem = FLEXBarButtonItemSystem(
-        Done, self, @selector(settingsViewControllerDoneTapped:)
-    );
+    settings.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStyleDone target:self action:@selector(settingsViewControllerDoneTapped:)];
+
     settings.title = @"网络调试设置";
     
     // This is not a FLEXNavigationController because it is not intended as a new tab

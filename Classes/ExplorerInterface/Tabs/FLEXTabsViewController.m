@@ -105,13 +105,13 @@
 }
 
 - (void)setupDefaultBarItems {
-    self.navigationItem.rightBarButtonItem = FLEXBarButtonItemSystem(Done, self, @selector(dismissAnimated));
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStyleDone target:self action:@selector(dismissAnimated)];
     self.toolbarItems = @[
         UIBarButtonItem.flex_fixedSpace,
         UIBarButtonItem.flex_flexibleSpace,
         FLEXBarButtonItemSystem(Add, self, @selector(addTabButtonPressed:)),
         UIBarButtonItem.flex_flexibleSpace,
-        FLEXBarButtonItemSystem(Edit, self, @selector(toggleEditing)),
+        [[UIBarButtonItem alloc] initWithTitle:@"编辑" style:UIBarButtonSystemItemEdit target:self action:@selector(toggleEditing)],
     ];
     
     // Disable editing if no tabs available
@@ -126,7 +126,7 @@
         [UIBarButtonItem flex_disabledSystemItem:UIBarButtonSystemItemAdd],
         UIBarButtonItem.flex_flexibleSpace,
         // We use a non-system done item because we change its title dynamically
-        [UIBarButtonItem flex_doneStyleitemWithTitle:@"完成" target:self action:@selector(toggleEditing)]
+        [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStyleDone target:self action:@selector(toggleEditing)]
     ];
     
     self.toolbarItems.firstObject.tintColor = FLEXColor.destructiveColor;

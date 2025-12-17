@@ -141,11 +141,7 @@
     }
     
     // Give root view controllers a Done button if it does not already have one
-    UIBarButtonItem *done = [[UIBarButtonItem alloc]
-        initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-        target:self
-        action:@selector(dismissAnimated)
-    ];
+    UIBarButtonItem *done = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStyleDone target:self action:@selector(dismissAnimated)];
     
     // Prepend the button if other buttons exist already
     NSArray *existingItems = navigationItem.rightBarButtonItems;
