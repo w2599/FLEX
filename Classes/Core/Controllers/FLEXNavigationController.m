@@ -206,7 +206,7 @@
         CGFloat yVelocity = [sender velocityInView:self.view].y;
         if (yVelocity > 2000) {
             [self setToolbarHidden:YES animated:YES];
-        } else if (show && yTranslation > 20 && yVelocity > 250) {
+        } else if (show && yTranslation > 20 && yVelocity > 80) {
             [self setToolbarHidden:NO animated:YES];
         } else if (yTranslation < -20) {
             [self setToolbarHidden:YES animated:YES];
