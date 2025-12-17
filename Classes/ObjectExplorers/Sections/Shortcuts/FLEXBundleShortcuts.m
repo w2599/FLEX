@@ -21,7 +21,7 @@
 + (instancetype)forObject:(NSBundle *)bundle { weakify(self)
     return [self forObject:bundle additionalRows:@[
         [FLEXActionShortcut
-            title:@"Browse Bundle Directory" subtitle:nil
+            title:@"浏览 Bundle 目录" subtitle:nil
             viewer:^UIViewController *(NSBundle *bundle) {
                 return [FLEXFileBrowserController path:bundle.bundlePath];
             }
@@ -29,7 +29,7 @@
                 return UITableViewCellAccessoryDisclosureIndicator;
             }
         ],
-        [FLEXActionShortcut title:@"Browse Bundle as Database…" subtitle:nil
+        [FLEXActionShortcut title:@"将 Bundle 作为数据库浏览…" subtitle:nil
             selectionHandler:^(UIViewController *host, NSBundle *bundle) { strongify(self)
                 [self promptToExportBundleAsDatabase:bundle host:host];
             }
@@ -42,11 +42,8 @@
 
 + (void)promptToExportBundleAsDatabase:(NSBundle *)bundle host:(UIViewController *)host {
     [FLEXAlert makeAlert:^(FLEXAlert *make) {
-        make.title(@"Save As…").message(
-            @"The database be saved in the Library folder. "
-            "Depending on the number of classes, it may take "
-            "10 minutes or more to finish exporting. 20,000 "
-            "classes takes about 7 minutes."
+        make.title(@"另存为…").message(
+            @"数据库将保存在 Library 文件夹中。根据类的数量，导出可能需要 10 分钟或更长时间。20000 个类大约需要 7 分钟。"
         );
         make.configuredTextField(^(UITextField *field) {
             field.placeholder = @"FLEXRuntimeExport.objc.db";
@@ -54,10 +51,10 @@
                 @"%@.objc.db", bundle.executablePath.lastPathComponent
             ];
         });
-        make.button(@"Start").handler(^(NSArray<NSString *> *strings) {
+        make.button(@"开始").handler(^(NSArray<NSString *> *strings) {
             [self browseBundleAsDatabase:bundle host:host name:strings[0]];
         });
-        make.button(@"Cancel").cancelStyle();
+        make.button(@"取消").cancelStyle();
     } showFrom:host];
 }
 
@@ -65,7 +62,7 @@
     NSParameterAssert(name.length);
 
     UIAlertController *progress = [FLEXAlert makeAlert:^(FLEXAlert *make) {
-        make.title(@"Generating Database");
+        make.title(@"正在生成数据库");
         // Some iOS version glitch out of there is
         // no initial message and you add one later
         make.message(@"…");
@@ -77,7 +74,7 @@
             NSLibraryDirectory, NSUserDomainMask, YES
         )[0] stringByAppendingPathComponent:name];
 
-        progress.message = [path stringByAppendingString:@"\n\nCreating database…"];
+        progress.message = [path stringByAppendingString:@"\n\n正在创建数据库…"];
 
         // Generate db and show progress
         [FLEXRuntimeExporter createRuntimeDatabaseAtPath:path
@@ -93,10 +90,10 @@
             } completion:^(NSString *error) {
                 // Display error if any
                 if (error) {
-                    progress.title = @"Error";
+                    progress.title = @"错误";
                     progress.message = error;
                     [progress addAction:[UIAlertAction
-                        actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil]
+                        actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil]
                     ];
                 }
                 // Browse database

@@ -112,7 +112,7 @@ static BOOL my_os_log_shim_enabled(void *addr) {
     }
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.title = @"Waiting for Logs...";
+    self.title = @"等待日志...";
 
     // Toolbar buttons //
 
@@ -203,20 +203,17 @@ static BOOL my_os_log_shim_enabled(void *addr) {
     BOOL disableOSLog = defaults.flex_disableOSLog;
     BOOL persistent = defaults.flex_cacheOSLogMessages;
 
-    NSString *aslToggle = disableOSLog ? @"Enable os_log (default)" : @"Disable os_log";
-    NSString *persistence = persistent ? @"Disable persistent logging" : @"Enable persistent logging";
+    NSString *aslToggle = disableOSLog ? @"启用 os_log（默认）" : @"禁用 os_log";
+    NSString *persistence = persistent ? @"禁用持久化日志" : @"启用持久化日志";
 
-    NSString *title = @"System Log Settings";
-    NSString *body = @"In iOS 10 and up, ASL has been replaced by os_log. "
-    "The os_log API is much more limited. Below, you can opt-into the old behavior "
-    "if you want cleaner, more reliable logs within FLEX, but this will break "
-    "anything that expects os_log to be working, such as Console.app. "
-    "This setting requires the app to restart to take effect. \n\n"
+    NSString *title = @"系统日志设置";
+    NSString *body = @"在 iOS 10 及以上，ASL 已被 os_log 替代。"
+    "os_log 的能力更受限。下面可以选择使用旧行为以在 FLEX 中获得更干净、更可靠的日志，"
+    "但这会破坏依赖 os_log 的工具（例如 Console.app）。"
+    "此设置需要重启应用后生效。\n\n"
 
-    "To get as close to the old behavior as possible with os_log enabled, logs must "
-    "be collected manually at launch and stored. This setting has no effect "
-    "on iOS 9 and below, or if os_log is disabled. "
-    "You should only enable persistent logging when you need it.";
+    "如果希望在启用 os_log 时尽量接近旧行为，必须在启动时手动收集并保存日志。" 
+    "该设置对 iOS 9 及以下或在 os_log 已被禁用时无效。仅在确实需要时启用持久化日志。";
 
     FLEXOSLogController *logController = (FLEXOSLogController *)self.logController;
 
@@ -231,7 +228,7 @@ static BOOL my_os_log_shim_enabled(void *addr) {
             logController.persistent = !persistent;
             [logController.messages addObjectsFromArray:self.logMessages.list];
         });
-        make.button(@"Dismiss").cancelStyle();
+        make.button(@"关闭").cancelStyle();
     } showFrom:self];
 }
 
@@ -239,7 +236,7 @@ static BOOL my_os_log_shim_enabled(void *addr) {
 #pragma mark - FLEXGlobalsEntry
 
 + (NSString *)globalsEntryTitle:(FLEXGlobalsRow)row {
-    return @"⚠️  System Log";
+    return @"⚠️  系统日志";
 }
 
 + (UIViewController *)globalsEntryViewController:(FLEXGlobalsRow)row {
@@ -278,7 +275,7 @@ contextMenuConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
     weakify(self)
     return [UIContextMenuConfiguration configurationWithIdentifier:nil previewProvider:nil
         actionProvider:^UIMenu *(NSArray<UIMenuElement *> *suggestedActions) {
-            UIAction *copy = [UIAction actionWithTitle:@"Copy"
+            UIAction *copy = [UIAction actionWithTitle:@"复制"
                                                  image:nil
                                             identifier:@"Copy"
                                                handler:^(UIAction *action) { strongify(self)

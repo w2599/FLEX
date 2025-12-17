@@ -80,7 +80,7 @@
     
     if (self.originalText.length > 0) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
-            initWithTitle:@"Copy" style:UIBarButtonItemStylePlain target:self action:@selector(copyButtonTapped:)
+            initWithTitle:@"复制" style:UIBarButtonItemStylePlain target:self action:@selector(copyButtonTapped:)
         ];
     }
 }

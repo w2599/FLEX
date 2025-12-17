@@ -52,12 +52,12 @@
         [self addSubview:self.dragHandle];
         
         // Buttons
-        self.globalsItem   = [FLEXExplorerToolbarItem itemWithTitle:@"menu" image:FLEXResources.globalsIcon];
-        self.hierarchyItem = [FLEXExplorerToolbarItem itemWithTitle:@"views" image:FLEXResources.hierarchyIcon];
-        self.selectItem    = [FLEXExplorerToolbarItem itemWithTitle:@"select" image:FLEXResources.selectIcon];
-        self.recentItem    = [FLEXExplorerToolbarItem itemWithTitle:@"recent" image:FLEXResources.recentIcon];
-        self.moveItem      = [FLEXExplorerToolbarItem itemWithTitle:@"move" image:FLEXResources.moveIcon sibling:self.recentItem];
-        self.closeItem     = [FLEXExplorerToolbarItem itemWithTitle:@"close" image:FLEXResources.closeIcon];
+        self.globalsItem   = [FLEXExplorerToolbarItem itemWithTitle:@"菜单" image:FLEXResources.globalsIcon];
+        self.hierarchyItem = [FLEXExplorerToolbarItem itemWithTitle:@"视图" image:FLEXResources.hierarchyIcon];
+        self.selectItem    = [FLEXExplorerToolbarItem itemWithTitle:@"选择" image:FLEXResources.selectIcon];
+        self.recentItem    = [FLEXExplorerToolbarItem itemWithTitle:@"最近" image:FLEXResources.recentIcon];
+        self.moveItem      = [FLEXExplorerToolbarItem itemWithTitle:@"移动" image:FLEXResources.moveIcon sibling:self.recentItem];
+        self.closeItem     = [FLEXExplorerToolbarItem itemWithTitle:@"关闭" image:FLEXResources.closeIcon];
 
         // Selected view box //
         

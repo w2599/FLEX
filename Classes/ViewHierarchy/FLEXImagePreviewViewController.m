@@ -43,7 +43,7 @@
     
     self = [super init];
     if (self) {
-        self.title = @"Preview";
+        self.title = @"预览";
         self.image = image;
         _backgroundColors = @[FLEXResources.checkerPatternColor, UIColor.whiteColor, UIColor.blackColor];
     }
@@ -139,8 +139,8 @@
         didShowWarning = YES;
         NSString *msg = @"Add 'NSPhotoLibraryUsageDescription' to this app's Info.plist to save images.";
         [FLEXAlert makeAlert:^(FLEXAlert *make) {
-            make.title(@"Reminder").message(msg);
-            make.button(@"OK").handler(^(NSArray<NSString *> *strings) {
+            make.title(@"提醒").message(msg);
+            make.button(@"确定").handler(^(NSArray<NSString *> *strings) {
                 [self presentViewController:activityVC animated:YES completion:nil];
             });
         } showFrom:self];

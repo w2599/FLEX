@@ -86,7 +86,7 @@
 
 - (void)reloadData {
     self.tables.customTitle = [NSString
-        stringWithFormat:@"Tables (%@)", @(self.tables.filteredList.count)
+        stringWithFormat:@"表格 (%@)", @(self.tables.filteredList.count)
     ];
     
     [super reloadData];
@@ -100,12 +100,12 @@
     FLEXSQLiteDatabaseManager *database = self.dbm;
     
     [FLEXAlert makeAlert:^(FLEXAlert *make) {
-        make.title(@"Execute an SQL query");
+        make.title(@"执行 SQL 查询");
         make.configuredTextField(^(UITextField *textField) {
             textField.text = prefillQuery;
         });
         
-        make.button(@"Run").handler(^(NSArray<NSString *> *strings) {
+        make.button(@"运行").handler(^(NSArray<NSString *> *strings) {
             NSString *query = strings[0];
             FLEXSQLResult *result = [database executeStatement:query];
             
@@ -113,16 +113,16 @@
                 // Allow users to edit their last query if it had an error
                 if ([result.message containsString:@"error"]) {
                     [FLEXAlert makeAlert:^(FLEXAlert *make) {
-                        make.title(@"Error").message(result.message);
-                        make.button(@"Edit Query").preferred().handler(^(NSArray<NSString *> *_) {
+                        make.title(@"错误").message(result.message);
+                        make.button(@"编辑查询").preferred().handler(^(NSArray<NSString *> *_) {
                             // Show query editor again with our last input
                             [self showQueryInput:query];
                         });
                         
-                        make.button(@"Cancel").cancelStyle();
+                        make.button(@"取消").cancelStyle();
                     } showFrom:self];
                 } else {
-                    [FLEXAlert showAlert:@"Message" message:result.message from:self];
+                    [FLEXAlert showAlert:@"信息" message:result.message from:self];
                 }
             } else {
                 UIViewController *resultsScreen = [FLEXTableContentViewController
@@ -132,7 +132,7 @@
                 [self.navigationController pushViewController:resultsScreen animated:YES];
             }
         });
-        make.button(@"Cancel").cancelStyle();
+        make.button(@"取消").cancelStyle();
     } showFrom:self];
 }
     

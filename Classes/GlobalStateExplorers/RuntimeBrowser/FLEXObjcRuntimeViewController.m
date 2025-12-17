@@ -83,37 +83,37 @@
 /// Prompt user for dlopen shortcuts to choose from
 - (void)dlopenPressed:(id)sender {
     [FLEXAlert makeAlert:^(FLEXAlert *make) {
-        make.title(@"Dynamically Open Library");
-        make.message(@"Invoke dlopen() with the given path. Choose an option below.");
+        make.title(@"动态打开库");
+        make.message(@"使用给定路径调用 dlopen()。请选择下面的一个选项。");
         
-        make.button(@"System Framework").handler(^(NSArray<NSString *> *_) {
+        make.button(@"系统框架").handler(^(NSArray<NSString *> *_) {
             [self dlopenWithFormat:@"/System/Library/Frameworks/%@.framework/%@"];
         });
-        make.button(@"System Private Framework").handler(^(NSArray<NSString *> *_) {
+        make.button(@"系统私有框架").handler(^(NSArray<NSString *> *_) {
             [self dlopenWithFormat:@"/System/Library/PrivateFrameworks/%@.framework/%@"];
         });
-        make.button(@"Arbitrary Binary").handler(^(NSArray<NSString *> *_) {
+        make.button(@"任意二进制").handler(^(NSArray<NSString *> *_) {
             [self dlopenWithFormat:nil];
         });
         
-        make.button(@"Cancel").cancelStyle();
+        make.button(@"取消").cancelStyle();
     } showFrom:self];
 }
 
 /// Prompt user for input and dlopen
 - (void)dlopenWithFormat:(NSString *)format {
     [FLEXAlert makeAlert:^(FLEXAlert *make) {
-        make.title(@"Dynamically Open Library");
+        make.title(@"动态打开库");
         if (format) {
-            make.message(@"Pass in a framework name, such as CarKit or FrontBoard.");
+            make.message(@"输入框架名称，例如 CarKit 或 FrontBoard。");
         } else {
-            make.message(@"Pass in an absolute path to a binary.");
+            make.message(@"输入指向二进制文件的绝对路径。");
         }
         
         make.textField(format ? @"ARKit" : @"/System/Library/Frameworks/ARKit.framework/ARKit");
         
-        make.button(@"Cancel").cancelStyle();
-        make.button(@"Open").destructiveStyle().handler(^(NSArray<NSString *> *strings) {
+        make.button(@"取消").cancelStyle();
+        make.button(@"打开").destructiveStyle().handler(^(NSArray<NSString *> *strings) {
             NSString *path = strings[0];
             
             if (path.length < 2) {
@@ -124,8 +124,8 @@
             
             if (!dlopen(path.UTF8String, RTLD_NOW)) {
                 [FLEXAlert makeAlert:^(FLEXAlert *make) {
-                    make.title(@"Error").message(@(dlerror()));
-                    make.button(@"Dismiss").cancelStyle();
+                        make.title(@"错误").message(@(dlerror()));
+                        make.button(@"关闭").cancelStyle();
                 }];
             }
         });
@@ -134,8 +134,8 @@
 
 - (void)dlopenInvalidPath {
     [FLEXAlert makeAlert:^(FLEXAlert * _Nonnull make) {
-        make.title(@"Path or Name Too Short");
-        make.button(@"Dismiss").cancelStyle();
+        make.title(@"路径或名称过短");
+        make.button(@"关闭").cancelStyle();
     } showFrom:self];
 }
 
@@ -145,13 +145,13 @@
 - (void)didSelectImagePath:(NSString *)path shortName:(NSString *)shortName {
     [FLEXAlert makeAlert:^(FLEXAlert *make) {
         make.title(shortName);
-        make.message(@"No NSBundle associated with this path:\n\n");
+        make.message(@"此路径未关联任何 NSBundle：\\n\\n");
         make.message(path);
 
-        make.button(@"Copy Path").handler(^(NSArray<NSString *> *strings) {
+        make.button(@"复制路径").handler(^(NSArray<NSString *> *strings) {
             UIPasteboard.generalPasteboard.string = path;
         });
-        make.button(@"Dismiss").cancelStyle();
+        make.button(@"关闭").cancelStyle();
     } showFrom:self];
 }
 
@@ -171,7 +171,7 @@
 #pragma mark - FLEXGlobalsEntry
 
 + (NSString *)globalsEntryTitle:(FLEXGlobalsRow)row {
-    return @"📚  Runtime Browser";
+    return @"📚  运行时浏览器";
 }
 
 + (UIViewController *)globalsEntryViewController:(FLEXGlobalsRow)row {

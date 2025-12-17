@@ -41,7 +41,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"View Controllers at Tap";
+    self.title = @"点按处的视图控制器";
     self.showsSearchBar = YES;
     [self disableToolbar];
 }

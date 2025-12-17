@@ -30,7 +30,7 @@
 
     self = [super initWithTarget:target data:method commitHandler:nil];
     if (self) {
-        self.title = method.isInstanceMethod ? @"Method: " : @"Class Method: ";
+        self.title = method.isInstanceMethod ? @"方法：" : @"类方法：";
         self.title = [self.title stringByAppendingString:method.selectorString];
     }
 
@@ -40,12 +40,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.actionButton.title = @"Call";
+    self.actionButton.title = @"调用";
 
     // Configure field editor view
     self.fieldEditorView.argumentInputViews = [self argumentInputViews];
     self.fieldEditorView.fieldDescription = [NSString stringWithFormat:
-        @"Signature:\n%@\n\nReturn Type:\n%s",
+        @"签名：\n%@\n\n返回类型：\n%s",
         self.method.description, (char *)self.method.returnType
     ];
 }
@@ -92,7 +92,7 @@
 
     // Display return value or error
     if (error) {
-        [FLEXAlert showAlert:@"Method Call Failed" message:error.localizedDescription from:self];
+        [FLEXAlert showAlert:@"方法调用失败" message:error.localizedDescription from:self];
     } else if (returnValue) {
         // For non-nil (or void) return types, push an explorer view controller to display the returned object
         returnValue = [FLEXRuntimeUtility potentiallyUnwrapBoxedPointer:returnValue type:self.method.returnType];

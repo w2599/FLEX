@@ -16,18 +16,18 @@
 
 + (instancetype)forObject:(UIView *)view {
     return [self forObject:view additionalRows:@[
-        [FLEXActionShortcut title:@"Animation Speed" subtitle:^NSString *(UIWindow *window) {
-            return [NSString stringWithFormat:@"Current speed: %.2f", window.layer.speed];
+        [FLEXActionShortcut title:@"动画速度" subtitle:^NSString *(UIWindow *window) {
+            return [NSString stringWithFormat:@"当前速度：%.2f", window.layer.speed];
         } selectionHandler:^(UIViewController *host, UIWindow *window) {
             [FLEXAlert makeAlert:^(FLEXAlert *make) {
-                make.title(@"Change Animation Speed");
-                make.message([NSString stringWithFormat:@"Current speed: %.2f", window.layer.speed]);
+                make.title(@"更改动画速度");
+                make.message([NSString stringWithFormat:@"当前速度：%.2f", window.layer.speed]);
                 make.configuredTextField(^(UITextField * _Nonnull textField) {
-                    textField.placeholder = @"Default: 1.0";
+                    textField.placeholder = @"默认：1.0";
                     textField.keyboardType = UIKeyboardTypeDecimalPad;
                 });
                 
-                make.button(@"OK").handler(^(NSArray<NSString *> *strings) {
+                make.button(@"确定").handler(^(NSArray<NSString *> *strings) {
                     NSNumberFormatter *formatter = [NSNumberFormatter new];
                     formatter.numberStyle = NSNumberFormatterDecimalStyle;
                     CGFloat speedValue = [formatter numberFromString:strings.firstObject].floatValue;
@@ -37,7 +37,7 @@
                     // TODO: this shouldn't be necessary
                     [(FLEXObjectExplorerViewController *)host reloadData];
                 });
-                make.button(@"Cancel").cancelStyle();
+                make.button(@"取消").cancelStyle();
             } showFrom:host];
         } accessoryType:^UITableViewCellAccessoryType(id  _Nonnull object) {
             return UITableViewCellAccessoryDisclosureIndicator;

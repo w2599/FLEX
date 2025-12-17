@@ -163,7 +163,7 @@
     // Description section is only for instances
     if (self.explorer.objectIsInstance) {
         _descriptionSection = [FLEXSingleRowSection
-            title:@"Description" reuse:kFLEXMultilineCell cell:^(FLEXTableViewCell *cell) {
+            title:@"描述" reuse:kFLEXMultilineCell cell:^(FLEXTableViewCell *cell) {
                 cell.titleLabel.font = UIFont.flex_defaultTableCellFont;
                 cell.titleLabel.text = explorer.objectDescription;
             }
@@ -175,8 +175,8 @@
 
     // Object graph section
     FLEXSingleRowSection *referencesSection = [FLEXSingleRowSection
-        title:@"Object Graph" reuse:kFLEXDefaultCell cell:^(FLEXTableViewCell *cell) {
-            cell.titleLabel.text = @"See Objects with References to This Object";
+        title:@"对象关系图" reuse:kFLEXDefaultCell cell:^(FLEXTableViewCell *cell) {
+            cell.titleLabel.text = @"查看引用此对象的对象";
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
     ];
@@ -227,16 +227,16 @@
 
 - (void)shareButtonPressed:(UIBarButtonItem *)sender {
     [FLEXAlert makeSheet:^(FLEXAlert *make) {
-        make.button(@"Add to Bookmarks").handler(^(NSArray<NSString *> *strings) {
+        make.button(@"添加到书签").handler(^(NSArray<NSString *> *strings) {
             [FLEXBookmarkManager.bookmarks addObject:self.object];
         });
-        make.button(@"Copy Description").handler(^(NSArray<NSString *> *strings) {
+        make.button(@"复制描述").handler(^(NSArray<NSString *> *strings) {
             UIPasteboard.generalPasteboard.string = self.explorer.objectDescription;
         });
-        make.button(@"Copy Address").handler(^(NSArray<NSString *> *strings) {
+        make.button(@"复制地址").handler(^(NSArray<NSString *> *strings) {
             UIPasteboard.generalPasteboard.string = [FLEXUtility addressOfObject:self.object];
         });
-        make.button(@"Cancel").cancelStyle();
+        make.button(@"取消").cancelStyle();
     } showFrom:self source:sender];
 }
 
@@ -299,11 +299,11 @@
     NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
     // Maps preference keys to a description of what they affect
     NSDictionary<NSString *, NSString *> *explorerToggles = @{
-        kFLEXDefaultsHidePropertyIvarsKey:    @"Property-Backing Ivars",
-        kFLEXDefaultsHidePropertyMethodsKey:  @"Property-Backing Methods",
-        kFLEXDefaultsHidePrivateMethodsKey:   @"Likely Private Methods",
-        kFLEXDefaultsShowMethodOverridesKey:  @"Method Overrides",
-        kFLEXDefaultsHideVariablePreviewsKey: @"Variable Previews"
+        kFLEXDefaultsHidePropertyIvarsKey:    @"属性关联的实例变量",
+        kFLEXDefaultsHidePropertyMethodsKey:  @"属性关联的方法",
+        kFLEXDefaultsHidePrivateMethodsKey:   @"可能的私有方法",
+        kFLEXDefaultsShowMethodOverridesKey:  @"方法重写",
+        kFLEXDefaultsHideVariablePreviewsKey: @"变量预览"
     };
     
     // Maps the key of the action itself to a map of a description
@@ -311,28 +311,27 @@
     //
     // So keys that are hidden by default have NO mapped to "Show"
     NSDictionary<NSString *, NSDictionary *> *nextStateDescriptions = @{
-        kFLEXDefaultsHidePropertyIvarsKey:    @{ @NO: @"Hide ", @YES: @"Show " },
-        kFLEXDefaultsHidePropertyMethodsKey:  @{ @NO: @"Hide ", @YES: @"Show " },
-        kFLEXDefaultsHidePrivateMethodsKey:   @{ @NO: @"Hide ", @YES: @"Show " },
-        kFLEXDefaultsShowMethodOverridesKey:  @{ @NO: @"Show ", @YES: @"Hide " },
-        kFLEXDefaultsHideVariablePreviewsKey: @{ @NO: @"Hide ", @YES: @"Show " },
+        kFLEXDefaultsHidePropertyIvarsKey:    @{ @NO: @"隐藏 ", @YES: @"显示 " },
+        kFLEXDefaultsHidePropertyMethodsKey:  @{ @NO: @"隐藏 ", @YES: @"显示 " },
+        kFLEXDefaultsHidePrivateMethodsKey:   @{ @NO: @"隐藏 ", @YES: @"显示 " },
+        kFLEXDefaultsShowMethodOverridesKey:  @{ @NO: @"显示 ", @YES: @"隐藏 " },
+        kFLEXDefaultsHideVariablePreviewsKey: @{ @NO: @"隐藏 ", @YES: @"显示 " },
     };
     
     [FLEXAlert makeSheet:^(FLEXAlert *make) {
-        make.title(@"Options");
+        make.title(@"选项");
         
         for (NSString *option in explorerToggles.allKeys) {
             BOOL current = [defaults boolForKey:option];
-            NSString *title = [nextStateDescriptions[option][@(current)]
-                stringByAppendingString:explorerToggles[option]
-            ];
+            NSString *prefix = nextStateDescriptions[option][@(current)];
+            NSString *title = [NSString stringWithFormat:@"%@%@", prefix, explorerToggles[option]];
             make.button(title).handler(^(NSArray<NSString *> *strings) {
                 [NSUserDefaults.standardUserDefaults flex_toggleBoolForKey:option];
                 [self fullyReloadData];
             });
         }
         
-        make.button(@"Cancel").cancelStyle();
+        make.button(@"取消").cancelStyle();
     } showFrom:self source:sender];
 }
 

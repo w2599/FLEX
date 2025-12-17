@@ -42,9 +42,9 @@
     section.selectionHandler = ^(UIViewController *host, NSString *column) {
         UIPasteboard.generalPasteboard.string = rowsByColumn[column].description;
         [FLEXAlert makeAlert:^(FLEXAlert *make) {
-            make.title(@"Column Copied to Clipboard");
+            make.title(@"已复制列到剪贴板");
             make.message(rowsByColumn[column].description);
-            make.button(@"Dismiss").cancelStyle();
+            make.button(@"关闭").cancelStyle();
         } showFrom:host];
     };
 

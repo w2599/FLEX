@@ -60,7 +60,7 @@ typedef NS_ENUM(NSInteger, FLEXNetworkObserverMode) {
     self.showsSearchBar = YES;
     self.pinSearchBar = YES;
     self.showSearchBarInitially = NO;
-    NSMutableArray *scopeTitles = [NSMutableArray arrayWithObject:@"REST"];
+    NSMutableArray *scopeTitles = [NSMutableArray arrayWithObject:@"REST 请求"];
     
     _HTTPDataSource = [FLEXMITMDataSource dataSourceWithProvider:^NSArray * {
         return FLEXNetworkRecorder.defaultRecorder.HTTPTransactions;
@@ -70,11 +70,11 @@ typedef NS_ENUM(NSInteger, FLEXNetworkObserverMode) {
         _firebaseDataSource = [FLEXMITMDataSource dataSourceWithProvider:^NSArray * {
             return FLEXNetworkRecorder.defaultRecorder.firebaseTransactions;
         }];
-        [scopeTitles insertObject:@"Firebase" atIndex:0]; // First space
+        [scopeTitles insertObject:@"Firebase 请求" atIndex:0]; // First space
     }
 
     if (kWebsocketsAvailable) {
-        [scopeTitles addObject:@"Websockets"]; // Last space
+        [scopeTitles addObject:@"WebSocket 请求"]; // Last space
         _websocketDataSource = [FLEXMITMDataSource dataSourceWithProvider:^NSArray * {
             return FLEXNetworkRecorder.defaultRecorder.websocketTransactions;
         }];
@@ -152,7 +152,7 @@ typedef NS_ENUM(NSInteger, FLEXNetworkObserverMode) {
     settings.navigationItem.rightBarButtonItem = FLEXBarButtonItemSystem(
         Done, self, @selector(settingsViewControllerDoneTapped:)
     );
-    settings.title = @"Network Debugging Settings";
+    settings.title = @"网络调试设置";
     
     // This is not a FLEXNavigationController because it is not intended as a new tab
     UIViewController *nav = [[UINavigationController alloc] initWithRootViewController:settings];
@@ -164,15 +164,15 @@ typedef NS_ENUM(NSInteger, FLEXNetworkObserverMode) {
     [FLEXAlert makeSheet:^(FLEXAlert *make) {
         BOOL clearAll = !self.dataSource.isFiltered;
         if (!clearAll) {
-            make.title(@"Clear Filtered Requests?");
-            make.message(@"This will only remove the requests matching your search string on this screen.");
+            make.title(@"清除筛选的请求？");
+            make.message(@"这只会移除与您在此屏幕中搜索字符串匹配的请求。");
         } else {
-            make.title(@"Clear All Recorded Requests?");
-            make.message(@"This cannot be undone.");
+            make.title(@"清除所有记录的请求？");
+            make.message(@"此操作无法撤销。");
         }
         
-        make.button(@"Cancel").cancelStyle();
-        make.button(@"Clear").destructiveStyle().handler(^(NSArray *strings) {
+        make.button(@"取消").cancelStyle();
+        make.button(@"清除").destructiveStyle().handler(^(NSArray *strings) {
             if (clearAll) {
                 [FLEXNetworkRecorder.defaultRecorder clearRecordedActivity];
             } else {
@@ -301,7 +301,7 @@ typedef NS_ENUM(NSInteger, FLEXNetworkObserverMode) {
     NSString *byteCountText = [NSByteCountFormatter
         stringFromByteCount:bytesReceived countStyle:NSByteCountFormatterCountStyleBinary
     ];
-    NSString *requestsText = totalRequests == 1 ? @"Request" : @"Requests";
+    NSString *requestsText = @"请求";
     
     // Exclude byte count from Firebase
     if (self.mode == FLEXNetworkObserverModeFirebase) {
@@ -309,8 +309,8 @@ typedef NS_ENUM(NSInteger, FLEXNetworkObserverMode) {
             @(totalRequests), requestsText
         ];
     }
-    
-    return [NSString stringWithFormat:@"%@ %@ (%@ received)",
+
+    return [NSString stringWithFormat:@"%@ %@（接收 %@）",
         @(totalRequests), requestsText, byteCountText
     ];
 }
@@ -319,7 +319,7 @@ typedef NS_ENUM(NSInteger, FLEXNetworkObserverMode) {
 #pragma mark - FLEXGlobalsEntry
 
 + (NSString *)globalsEntryTitle:(FLEXGlobalsRow)row {
-    return @"📡  Network History";
+    return @"📡  网络历史";
 }
 
 + (FLEXGlobalsEntryRowAction)globalsEntryRowAction:(FLEXGlobalsRow)row {
@@ -330,16 +330,16 @@ typedef NS_ENUM(NSInteger, FLEXNetworkObserverMode) {
             ] animated:YES];
         } else {
             [FLEXAlert makeAlert:^(FLEXAlert *make) {
-                make.title(@"Network Monitor Disabled");
-                make.message(@"You must enable network monitoring to proceed.");
+                make.title(@"网络监视已禁用");
+                make.message(@"您必须启用网络监视才能继续。");
                 
-                make.button(@"Turn On").preferred().handler(^(NSArray<NSString *> *strings) {
+                make.button(@"开启").preferred().handler(^(NSArray<NSString *> *strings) {
                     FLEXNetworkObserver.enabled = YES;
                     [host.navigationController pushViewController:[
                         self globalsEntryViewController:row
                     ] animated:YES];
                 });
-                make.button(@"Dismiss").cancelStyle();
+                make.button(@"关闭").cancelStyle();
             } showFrom:host];
         }
     };
@@ -555,7 +555,7 @@ typedef NS_ENUM(NSInteger, FLEXNetworkObserverMode) {
         previewProvider:nil
         actionProvider:^UIMenu *(NSArray<UIMenuElement *> *suggestedActions) {
             UIAction *copy = [UIAction
-                actionWithTitle:@"Copy URL"
+                actionWithTitle:@"复制 URL"
                 image:nil
                 identifier:nil
                 handler:^(__kindof UIAction *action) {
@@ -567,7 +567,7 @@ typedef NS_ENUM(NSInteger, FLEXNetworkObserverMode) {
             if (self.mode == FLEXNetworkObserverModeREST) {
                 NSURLRequest *request = [self HTTPTransactionAtIndexPath:indexPath].request;
                 UIAction *denylist = [UIAction
-                    actionWithTitle:[NSString stringWithFormat:@"Exclude '%@'", request.URL.host]
+                    actionWithTitle:[NSString stringWithFormat:@"排除 '%@'", request.URL.host]
                     image:nil
                     identifier:nil
                     handler:^(__kindof UIAction *action) {

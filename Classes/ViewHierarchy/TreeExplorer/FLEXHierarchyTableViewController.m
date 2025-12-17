@@ -59,7 +59,7 @@ typedef NS_ENUM(NSUInteger, FLEXHierarchyScope) {
         self.viewsAtTap = viewsAtTap;
         self.selectedView = selectedView;
         
-        self.title = @"View Hierarchy Tree";
+        self.title = @"视图层级树";
     }
 
     return self;
@@ -87,7 +87,7 @@ typedef NS_ENUM(NSUInteger, FLEXHierarchyScope) {
     self.automaticallyShowsSearchBarCancelButton = NO;
     if (self.showScopeBar) {
         self.searchController.searchBar.showsScopeBar = YES;
-        self.searchController.searchBar.scopeButtonTitles = @[@"Full Hierarchy", @"Views at Tap"];
+        self.searchController.searchBar.scopeButtonTitles = @[@"完整层级", @"点按处视图"];
         self.selectedScope = FLEXHierarchyScopeViewsAtTap;
     }
     

@@ -23,21 +23,19 @@
             }
             selectionHandler:^void(UIViewController *host, UIApplication *app) {
                 [FLEXAlert makeAlert:^(FLEXAlert *make) {
-                    make.title(@"Open URL");
+                    make.title(@"打开 URL");
                     make.message(
-                        @"This will call openURL: or openURL:options:completion: "
-                         "with the string below. 'Open if Universal' will only open "
-                         "the URL if it is a registered Universal Link."
+                        @"这将调用 openURL: 或 openURL:options:completion:，使用下面的字符串。'仅在为通用链接时打开' 仅在链接为已注册的通用链接时打开。"
                     );
                     
                     make.textField(@"twitter://user?id=12345");
-                    make.button(@"Open").handler(^(NSArray<NSString *> *strings) {
+                    make.button(@"打开").handler(^(NSArray<NSString *> *strings) {
                         [self openURL:strings[0] inApp:app onlyIfUniveral:NO host:host];
                     });
-                    make.button(@"Open if Universal").handler(^(NSArray<NSString *> *strings) {
+                    make.button(@"如果是通用链接则打开").handler(^(NSArray<NSString *> *strings) {
                         [self openURL:strings[0] inApp:app onlyIfUniveral:YES host:host];
                     });
-                    make.button(@"Cancel").cancelStyle();
+                    make.button(@"取消").cancelStyle();
                 } showFrom:host];
             }
             accessoryType:^UITableViewCellAccessoryType(UIViewController *controller) {
@@ -58,8 +56,8 @@
             UIApplicationOpenURLOptionUniversalLinksOnly: @(universalOnly)
         } completionHandler:^(BOOL success) {
             if (!success) {
-                [FLEXAlert showAlert:@"No Universal Link Handler"
-                    message:@"No installed application is registered to handle this link."
+                [FLEXAlert showAlert:@"无通用链接处理程序"
+                    message:@"没有已安装的应用程序注册来处理此链接。"
                     from:host
                 ];
             }

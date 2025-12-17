@@ -41,13 +41,13 @@
 + (NSString *)globalsTitleForSection:(FLEXGlobalsSectionKind)section {
     switch (section) {
         case FLEXGlobalsSectionCustom:
-            return @"Custom Additions";
+            return @"自定义扩展";
         case FLEXGlobalsSectionProcessAndEvents:
-            return @"Process and Events";
+            return @"进程与事件";
         case FLEXGlobalsSectionAppShortcuts:
-            return @"App Shortcuts";
+            return @"应用快捷指令";
         case FLEXGlobalsSectionMisc:
-            return @"Miscellaneous";
+            return @"其他";
 
         default:
             @throw NSInternalInconsistencyException;
@@ -170,7 +170,7 @@
     self.title = @"💪  FLEX";
     self.showsSearchBar = YES;
     self.searchBarDebounceInterval = kFLEXDebounceInstant;
-    self.navigationItem.backBarButtonItem = [UIBarButtonItem flex_backItemWithTitle:@"Back"];
+    self.navigationItem.backBarButtonItem = [UIBarButtonItem flex_backItemWithTitle:@"返回"];
     
     _manuallyDeselectOnAppear = NSProcessInfo.processInfo.operatingSystemVersion.majorVersion < 10;
 }

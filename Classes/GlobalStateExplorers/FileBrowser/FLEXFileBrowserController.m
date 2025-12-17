@@ -92,32 +92,33 @@ typedef NS_ENUM(NSUInteger, FLEXFileBrowserSortAttribute) {
     self.showsSearchBar = YES;
     self.searchBarDebounceInterval = kFLEXDebounceForAsyncSearch;
     [self addToolbarItems:@[
-        [[UIBarButtonItem alloc] initWithTitle:@"Sort"
+        [[UIBarButtonItem alloc] initWithTitle:@"排序"
                                          style:UIBarButtonItemStylePlain
                                         target:self
                                         action:@selector(sortDidTouchUpInside:)]
     ]];
 }
 
-- (void)sortDidTouchUpInside:(UIBarButtonItem *)sortButton {
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Sort"
+- (void)sortDidTouchUpInside:(UIBarButtonItem *)sortButton
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"排序"
                                                                              message:nil
                                                                       preferredStyle:UIAlertControllerStyleActionSheet];
-    [alertController addAction:[UIAlertAction actionWithTitle:@"None"
+    [alertController addAction:[UIAlertAction actionWithTitle:@"无"
                                                         style:UIAlertActionStyleCancel
-                                                      handler:^(UIAlertAction * _Nonnull action) {
-        [self sortWithAttribute:FLEXFileBrowserSortAttributeNone];
-    }]];
-    [alertController addAction:[UIAlertAction actionWithTitle:@"Name"
+                                                      handler:^(UIAlertAction *_Nonnull action) {
+                                                          [self sortWithAttribute:FLEXFileBrowserSortAttributeNone];
+                                                      }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"名称"
                                                         style:UIAlertActionStyleDefault
-                                                      handler:^(UIAlertAction * _Nonnull action) {
-        [self sortWithAttribute:FLEXFileBrowserSortAttributeName];
-    }]];
-    [alertController addAction:[UIAlertAction actionWithTitle:@"Creation Date"
+                                                      handler:^(UIAlertAction *_Nonnull action) {
+                                                          [self sortWithAttribute:FLEXFileBrowserSortAttributeName];
+                                                      }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"创建日期"
                                                         style:UIAlertActionStyleDefault
-                                                      handler:^(UIAlertAction * _Nonnull action) {
-        [self sortWithAttribute:FLEXFileBrowserSortAttributeCreationDate];
-    }]];
+                                                      handler:^(UIAlertAction *_Nonnull action) {
+                                                          [self sortWithAttribute:FLEXFileBrowserSortAttributeCreationDate];
+                                                      }]];
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
@@ -130,8 +131,8 @@ typedef NS_ENUM(NSUInteger, FLEXFileBrowserSortAttribute) {
 
 + (NSString *)globalsEntryTitle:(FLEXGlobalsRow)row {
     switch (row) {
-        case FLEXGlobalsRowBrowseBundle: return @"📁  Browse Bundle Directory";
-        case FLEXGlobalsRowBrowseContainer: return @"📁  Browse Container Directory";
+        case FLEXGlobalsRowBrowseBundle: return @"📁  浏览 Bundle 目录";
+        case FLEXGlobalsRowBrowseContainer: return @"📁  浏览容器目录";
         default: return nil;
     }
 }
@@ -183,12 +184,12 @@ typedef NS_ENUM(NSUInteger, FLEXFileBrowserSortAttribute) {
 
     NSString *sizeString = nil;
     if (!currentSize) {
-        sizeString = @"Computing size…";
+        sizeString = @"正在计算大小…";
     } else {
         sizeString = [NSByteCountFormatter stringFromByteCount:[currentSize longLongValue] countStyle:NSByteCountFormatterCountStyleFile];
     }
 
-    return [NSString stringWithFormat:@"%lu files (%@)", (unsigned long)currentPaths.count, sizeString];
+    return [NSString stringWithFormat:@"%lu 个文件（%@）", (unsigned long)currentPaths.count, sizeString];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -198,10 +199,10 @@ typedef NS_ENUM(NSUInteger, FLEXFileBrowserSortAttribute) {
     NSString *subtitle = nil;
     if (isDirectory) {
         NSUInteger count = [NSFileManager.defaultManager contentsOfDirectoryAtPath:fullPath error:NULL].count;
-        subtitle = [NSString stringWithFormat:@"%lu item%@", (unsigned long)count, (count == 1 ? @"" : @"s")];
+        subtitle = [NSString stringWithFormat:@"%lu 项", (unsigned long)count];
     } else {
         NSString *sizeString = [NSByteCountFormatter stringFromByteCount:attributes.fileSize countStyle:NSByteCountFormatterCountStyleFile];
-        subtitle = [NSString stringWithFormat:@"%@ - %@", sizeString, attributes.fileModificationDate ?: @"Never modified"];
+        subtitle = [NSString stringWithFormat:@"%@ - %@", sizeString, attributes.fileModificationDate ?: @"从未修改"];
     }
 
     static NSString *textCellIdentifier = @"textCell";
@@ -244,7 +245,7 @@ typedef NS_ENUM(NSUInteger, FLEXFileBrowserSortAttribute) {
     UIImage *image = cell.imageView.image;
 
     if (!stillExists) {
-        [FLEXAlert showAlert:@"File Not Found" message:@"The file at the specified path no longer exists." from:self];
+        [FLEXAlert showAlert:@"文件未找到" message:@"指定路径的文件已不存在。" from:self];
         [self reloadDisplayedPaths];
         return;
     }
@@ -257,7 +258,7 @@ typedef NS_ENUM(NSUInteger, FLEXFileBrowserSortAttribute) {
     } else {
         NSData *fileData = [NSData dataWithContentsOfFile:fullPath];
         if (!fileData.length) {
-            [FLEXAlert showAlert:@"Empty File" message:@"No data returned from the file." from:self];
+            [FLEXAlert showAlert:@"空文件" message:@"文件未返回数据。" from:self];
             return;
         }
 
@@ -340,10 +341,10 @@ typedef NS_ENUM(NSUInteger, FLEXFileBrowserSortAttribute) {
 }
 
 - (BOOL)tableView:(UITableView *)tableView shouldShowMenuForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UIMenuItem *rename = [[UIMenuItem alloc] initWithTitle:@"Rename" action:@selector(fileBrowserRename:)];
-    UIMenuItem *delete = [[UIMenuItem alloc] initWithTitle:@"Delete" action:@selector(fileBrowserDelete:)];
-    UIMenuItem *copyPath = [[UIMenuItem alloc] initWithTitle:@"Copy Path" action:@selector(fileBrowserCopyPath:)];
-    UIMenuItem *share = [[UIMenuItem alloc] initWithTitle:@"Share" action:@selector(fileBrowserShare:)];
+    UIMenuItem *rename = [[UIMenuItem alloc] initWithTitle:@"重命名" action:@selector(fileBrowserRename:)];
+    UIMenuItem *delete = [[UIMenuItem alloc] initWithTitle:@"删除" action:@selector(fileBrowserDelete:)];
+    UIMenuItem *copyPath = [[UIMenuItem alloc] initWithTitle:@"复制路径" action:@selector(fileBrowserCopyPath:)];
+    UIMenuItem *share = [[UIMenuItem alloc] initWithTitle:@"分享" action:@selector(fileBrowserShare:)];
 
     UIMenuController.sharedMenuController.menuItems = @[rename, delete, copyPath, share];
 
@@ -370,28 +371,28 @@ contextMenuConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
     return [UIContextMenuConfiguration configurationWithIdentifier:nil previewProvider:nil
         actionProvider:^UIMenu *(NSArray<UIMenuElement *> *suggestedActions) {
             UITableViewCell * const cell = [tableView cellForRowAtIndexPath:indexPath];
-            UIAction *rename = [UIAction actionWithTitle:@"Rename" image:nil identifier:@"Rename"
+            UIAction *rename = [UIAction actionWithTitle:@"重命名" image:nil identifier:@"Rename"
                 handler:^(UIAction *action) { strongify(self)
                     [self fileBrowserRename:cell];
                 }
             ];
-            UIAction *delete = [UIAction actionWithTitle:@"Delete" image:nil identifier:@"Delete"
+            UIAction *delete = [UIAction actionWithTitle:@"删除" image:nil identifier:@"Delete"
                 handler:^(UIAction *action) { strongify(self)
                     [self fileBrowserDelete:cell];
                 }
             ];
-            UIAction *copyPath = [UIAction actionWithTitle:@"Copy Path" image:nil identifier:@"Copy Path"
+            UIAction *copyPath = [UIAction actionWithTitle:@"复制路径" image:nil identifier:@"Copy Path"
                 handler:^(UIAction *action) { strongify(self)
                     [self fileBrowserCopyPath:cell];
                 }
             ];
-            UIAction *share = [UIAction actionWithTitle:@"Share" image:nil identifier:@"Share"
+            UIAction *share = [UIAction actionWithTitle:@"分享" image:nil identifier:@"Share"
                 handler:^(UIAction *action) { strongify(self)
                     [self fileBrowserShare:cell];
                 }
             ];
             
-            return [UIMenu menuWithTitle:@"Manage File" image:nil
+            return [UIMenu menuWithTitle:@"管理文件" image:nil
                 identifier:@"Manage File"
                 options:UIMenuOptionsDisplayInline
                 children:@[rename, delete, copyPath, share]
@@ -415,21 +416,21 @@ contextMenuConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
     BOOL stillExists = [NSFileManager.defaultManager fileExistsAtPath:self.path isDirectory:NULL];
     if (stillExists) {
         [FLEXAlert makeAlert:^(FLEXAlert *make) {
-            make.title([NSString stringWithFormat:@"Rename %@?", fullPath.lastPathComponent]);
+            make.title([NSString stringWithFormat:@"重命名 %@?", fullPath.lastPathComponent]);
             make.configuredTextField(^(UITextField *textField) {
-                textField.placeholder = @"New file name";
+                textField.placeholder = @"新文件名";
                 textField.text = fullPath.lastPathComponent;
             });
-            make.button(@"Rename").handler(^(NSArray<NSString *> *strings) {
+            make.button(@"重命名").handler(^(NSArray<NSString *> *strings) {
                 NSString *newFileName = strings.firstObject;
                 NSString *newPath = [fullPath.stringByDeletingLastPathComponent stringByAppendingPathComponent:newFileName];
                 [NSFileManager.defaultManager moveItemAtPath:fullPath toPath:newPath error:NULL];
                 [self reloadDisplayedPaths];
             });
-            make.button(@"Cancel").cancelStyle();
+            make.button(@"取消").cancelStyle();
         } showFrom:self];
     } else {
-        [FLEXAlert showAlert:@"File Removed" message:@"The file at the specified path no longer exists." from:self];
+        [FLEXAlert showAlert:@"文件已移除" message:@"指定路径的文件已不存在。" from:self];
     }
 }
 
@@ -441,19 +442,19 @@ contextMenuConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
     BOOL stillExists = [NSFileManager.defaultManager fileExistsAtPath:fullPath isDirectory:&isDirectory];
     if (stillExists) {
         [FLEXAlert makeAlert:^(FLEXAlert *make) {
-            make.title(@"Confirm Deletion");
+            make.title(@"确认删除");
             make.message([NSString stringWithFormat:
-                @"The %@ '%@' will be deleted. This operation cannot be undone",
-                (isDirectory ? @"directory" : @"file"), fullPath.lastPathComponent
+                @"%@ '%@' 将被删除。此操作无法撤销",
+                (isDirectory ? @"目录" : @"文件"), fullPath.lastPathComponent
             ]);
-            make.button(@"Delete").destructiveStyle().handler(^(NSArray<NSString *> *strings) {
+            make.button(@"删除").destructiveStyle().handler(^(NSArray<NSString *> *strings) {
                 [NSFileManager.defaultManager removeItemAtPath:fullPath error:NULL];
                 [self reloadDisplayedPaths];
             });
-            make.button(@"Cancel").cancelStyle();
+            make.button(@"取消").cancelStyle();
         } showFrom:self];
     } else {
-        [FLEXAlert showAlert:@"File Removed" message:@"The file at the specified path no longer exists." from:self];
+        [FLEXAlert showAlert:@"文件已移除" message:@"指定路径的文件已不存在。" from:self];
     }
 }
 

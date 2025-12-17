@@ -82,7 +82,7 @@ BOOL const kFHSViewControllerExcludeFLEXWindows = YES;
 - (void)refreshSnapshotView {
     // Alert view to block interaction while we load everything
     UIAlertController *loading = [FLEXAlert makeAlert:^(FLEXAlert *make) {
-        make.title(@"Please Wait").message(@"Generating snapshot…");
+        make.title(@"请稍候").message(@"正在生成快照…");
     }];
     [self presentViewController:loading animated:YES completion:^{
         self.snapshots = [self.views flex_mapped:^id(FHSView *view, NSUInteger idx) {
@@ -208,10 +208,10 @@ BOOL const kFHSViewControllerExcludeFLEXWindows = YES;
 - (void)didPressOptionsButton:(UIBarButtonItem *)sender {
     [FLEXAlert makeSheet:^(FLEXAlert *make) {
         if (self.selectedView) {
-            make.button(@"Hide selected view").handler(^(NSArray<NSString *> *strings) {
+            make.button(@"隐藏所选视图").handler(^(NSArray<NSString *> *strings) {
                 [self.snapshotView hideView:[self snapshotForView:self.selectedView]];
             });
-            make.button(@"Hide headers for views like this").handler(^(NSArray<NSString *> *strings) {
+            make.button(@"为类似视图隐藏头部").handler(^(NSArray<NSString *> *strings) {
                 Class cls = [self.selectedView class];
                 if (![self.forceHideHeaders containsObject:cls]) {
                     [self.forceHideHeaders addObject:[self.selectedView class]];
@@ -219,14 +219,14 @@ BOOL const kFHSViewControllerExcludeFLEXWindows = YES;
                 }
             });
         }
-        make.title(@"Options");
-        make.button(@"Toggle headers").handler(^(NSArray<NSString *> *strings) {
+        make.title(@"选项");
+        make.button(@"切换头部").handler(^(NSArray<NSString *> *strings) {
             [self.snapshotView toggleShowHeaders];
         });
-        make.button(@"Toggle outlines").handler(^(NSArray<NSString *> *strings) {
+        make.button(@"切换轮廓").handler(^(NSArray<NSString *> *strings) {
             [self.snapshotView toggleShowBorders];
         });
-        make.button(@"Cancel").cancelStyle();
+        make.button(@"取消").cancelStyle();
     } showFrom:self source:sender];
 }
 

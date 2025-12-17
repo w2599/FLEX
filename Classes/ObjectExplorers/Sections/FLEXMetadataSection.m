@@ -51,9 +51,9 @@
     unsigned long filteredCount = self.metadata.count;
 
     if (totalCount == filteredCount) {
-        return [baseName stringByAppendingFormat:@" (%lu)", totalCount];
+        return [baseName stringByAppendingFormat:@"（%lu）", totalCount];
     } else {
-        return [baseName stringByAppendingFormat:@" (%lu of %lu)", filteredCount, totalCount];
+        return [baseName stringByAppendingFormat:@"（%lu / %lu）", filteredCount, totalCount];
     }
 }
 
@@ -81,21 +81,21 @@
 - (NSString *)title {
     switch (self.metadataKind) {
         case FLEXMetadataKindProperties:
-            return [self titleWithBaseName:@"Properties"];
+            return [self titleWithBaseName:@"属性"];
         case FLEXMetadataKindClassProperties:
-            return [self titleWithBaseName:@"Class Properties"];
+            return [self titleWithBaseName:@"类属性"];
         case FLEXMetadataKindIvars:
-            return [self titleWithBaseName:@"Ivars"];
+            return [self titleWithBaseName:@"实例变量"];
         case FLEXMetadataKindMethods:
-            return [self titleWithBaseName:@"Methods"];
+            return [self titleWithBaseName:@"方法"];
         case FLEXMetadataKindClassMethods:
-            return [self titleWithBaseName:@"Class Methods"];
+            return [self titleWithBaseName:@"类方法"];
         case FLEXMetadataKindClassHierarchy:
-            return [self titleWithBaseName:@"Class Hierarchy"];
+            return [self titleWithBaseName:@"类层次"];
         case FLEXMetadataKindProtocols:
-            return [self titleWithBaseName:@"Protocols"];
+            return [self titleWithBaseName:@"协议"];
         case FLEXMetadataKindOther:
-            return @"Miscellaneous";
+            return @"杂项";
     }
 }
 
@@ -209,7 +209,7 @@
     NSMutableArray<UIMenuElement *> *menuItems = [NSMutableArray new];
     
     [menuItems addObject:[UIAction
-        actionWithTitle:@"Explore Metadata"
+        actionWithTitle:@"浏览元数据"
         image:nil
         identifier:nil
         handler:^(__kindof UIAction *action) {

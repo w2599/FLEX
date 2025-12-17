@@ -33,7 +33,7 @@ typedef NS_ENUM(NSUInteger, FLEXArgInputObjectType) {
         self.inputTextView.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
         self.targetSize = FLEXArgumentInputViewSizeLarge;
 
-        self.objectTypeSegmentControl = [[UISegmentedControl alloc] initWithItems:@[@"Value", @"Address"]];
+        self.objectTypeSegmentControl = [[UISegmentedControl alloc] initWithItems:@[@"值", @"地址"]];
         [self.objectTypeSegmentControl addTarget:self action:@selector(didChangeType) forControlEvents:UIControlEventValueChanged];
         self.objectTypeSegmentControl.selectedSegmentIndex = 0;
         [self addSubview:self.objectTypeSegmentControl];
@@ -78,8 +78,8 @@ typedef NS_ENUM(NSUInteger, FLEXArgInputObjectType) {
     switch (inputType) {
         case FLEXArgInputObjectTypeJSON:
             self.inputPlaceholderText =
-            @"You can put any valid JSON here, such as a string, number, array, or dictionary:"
-            "\n\"This is a string\""
+            @"你可以在此处填写任意有效的 JSON，例如字符串、数字、数组或字典："
+            "\n\"这是一个字符串\""
             "\n1234"
             "\n{ \"name\": \"Bob\", \"age\": 47 }"
             "\n["

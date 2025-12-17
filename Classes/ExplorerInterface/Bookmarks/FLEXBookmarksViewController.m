@@ -51,7 +51,7 @@
     // We assume the bookmarks aren't going to change out from under us, since
     // presenting any other tool via keyboard shortcuts should dismiss us first
     self.bookmarks = FLEXBookmarkManager.bookmarks;
-    self.title = [NSString stringWithFormat:@"Bookmarks (%@)", @(self.bookmarks.count)];
+    self.title = [NSString stringWithFormat:@"书签 (%@)", @(self.bookmarks.count)];
 }
 
 - (void)setupDefaultBarItems {
@@ -68,10 +68,10 @@
 - (void)setupEditingBarItems {
     self.navigationItem.rightBarButtonItem = nil;
     self.toolbarItems = @[
-        [UIBarButtonItem flex_itemWithTitle:@"Close All" target:self action:@selector(closeAllButtonPressed:)],
+        [UIBarButtonItem flex_itemWithTitle:@"全部关闭" target:self action:@selector(closeAllButtonPressed:)],
         UIBarButtonItem.flex_flexibleSpace,
         // We use a non-system done item because we change its title dynamically
-        [UIBarButtonItem flex_doneStyleitemWithTitle:@"Done" target:self action:@selector(toggleEditing)]
+        [UIBarButtonItem flex_doneStyleitemWithTitle:@"完成" target:self action:@selector(toggleEditing)]
     ];
     
     self.toolbarItems.firstObject.tintColor = FLEXColor.destructiveColor;
@@ -85,7 +85,7 @@
     presenter = (id)presenter.presentingViewController ?: presenter;
     NSAssert(
         [presenter isKindOfClass:[FLEXExplorerViewController class]],
-        @"The bookmarks view controller expects to be presented by the explorer controller"
+        @"书签视图控制器期望由浏览器控制器呈现"
     );
     return presenter;
 }
@@ -158,7 +158,7 @@
             [self closeAll];
             [self toggleEditing];
         });
-        make.button(@"Cancel").cancelStyle();
+        make.button(@"取消").cancelStyle();
     } showFrom:self source:sender];
 }
 
@@ -199,7 +199,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (self.editing) {
         // Case: editing with multi-select
-        self.toolbarItems.lastObject.title = @"Remove Selected";
+        self.toolbarItems.lastObject.title = @"移除所选项";
         self.toolbarItems.lastObject.tintColor = FLEXColor.destructiveColor;
     } else {
         // Case: selected a bookmark
@@ -211,7 +211,7 @@
     NSParameterAssert(self.editing);
     
     if (tableView.indexPathsForSelectedRows.count == 0) {
-        self.toolbarItems.lastObject.title = @"Done";
+        self.toolbarItems.lastObject.title = @"完成";
         self.toolbarItems.lastObject.tintColor = self.view.tintColor;
     }
 }

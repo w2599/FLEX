@@ -160,16 +160,16 @@
     }];
     
     [FLEXAlert makeAlert:^(FLEXAlert *make) {
-        make.title([@"Row " stringByAppendingString:@(row).stringValue]);
+        make.title([NSString stringWithFormat:@"%@ %@", @"行", @(row).stringValue]);
         NSString *message = [fields componentsJoinedByString:@"\n\n"];
         make.message(message);
-        make.button(@"Copy").handler(^(NSArray<NSString *> *strings) {
+        make.button(@"复制").handler(^(NSArray<NSString *> *strings) {
             UIPasteboard.generalPasteboard.string = message;
         });
-        make.button(@"Copy as CSV").handler(^(NSArray<NSString *> *strings) {
+        make.button(@"复制为 CSV").handler(^(NSArray<NSString *> *strings) {
             UIPasteboard.generalPasteboard.string = [values componentsJoinedByString:@", "];
         });
-        make.button(@"Focus on Row").handler(^(NSArray<NSString *> *strings) {
+        make.button(@"聚焦该行").handler(^(NSArray<NSString *> *strings) {
             UIViewController *focusedRow = [FLEXTableRowDataViewController
                 rows:[NSDictionary dictionaryWithObjects:self.rows[row] forKeys:self.columns]
             ];
@@ -179,7 +179,7 @@
         // Option to delete row
         BOOL hasRowID = self.rows.count && row < self.rows.count;
         if (hasRowID && self.canRefresh) {
-            make.button(@"Delete").destructiveStyle().handler(^(NSArray<NSString *> *strings) {
+            make.button(@"删除").destructiveStyle().handler(^(NSArray<NSString *> *strings) {
                 NSString *deleteRow = [NSString stringWithFormat:
                     @"DELETE FROM %@ WHERE rowid = %@",
                     self.tableName, self.rowIDs[row]
@@ -194,7 +194,7 @@
             });
         }
         
-        make.button(@"Dismiss").cancelStyle();
+        make.button(@"关闭").cancelStyle();
     } showFrom:self];
 }
 
@@ -279,10 +279,10 @@
     NSParameterAssert(self.tableName);
 
     [FLEXAlert makeAlert:^(FLEXAlert *make) {
-        make.title(@"Delete All Rows");
-        make.message(@"All rows in this table will be permanently deleted.\nDo you want to proceed?");
+        make.title(@"删除所有行");
+        make.message(@"此表中的所有行将被永久删除。\\n要继续吗？");
         
-        make.button(@"Yes, I'm sure").destructiveStyle().handler(^(NSArray<NSString *> *strings) {
+        make.button(@"是的，我确定").destructiveStyle().handler(^(NSArray<NSString *> *strings) {
             NSString *deleteAll = [NSString stringWithFormat:@"DELETE FROM %@", self.tableName];
             [self executeStatementAndShowResult:deleteAll completion:^(BOOL success) {
                 // Only dismiss on success
@@ -291,7 +291,7 @@
                 }
             }];
         });
-        make.button(@"Cancel").cancelStyle();
+        make.button(@"取消").cancelStyle();
     } showFrom:self];
 }
 
@@ -299,11 +299,11 @@
     NSParameterAssert(self.tableName);
 
     [FLEXAlert makeAlert:^(FLEXAlert *make) {
-        make.title(@"Add a New Row");
-        make.message(@"Comma separate values to use in an INSERT statement.\n\n");
-        make.message(@"INSERT INTO [table] VALUES (your_input)");
-        make.textField(@"5, 'John Smith', 14,...");
-        make.button(@"Insert").handler(^(NSArray<NSString *> *strings) {
+        make.title(@"添加新行");
+        make.message(@"用逗号分隔值以用于 INSERT 语句。\\n\\n");
+        make.message(@"INSERT INTO [table] VALUES (你的输入)");
+        make.textField(@"5, '张三', 14,...");
+        make.button(@"插入").handler(^(NSArray<NSString *> *strings) {
             NSString *statement = [NSString stringWithFormat:
                 @"INSERT INTO %@ VALUES (%@)", self.tableName, strings[0]
             ];
@@ -314,7 +314,7 @@
                 }
             }];
         });
-        make.button(@"Cancel").cancelStyle();
+        make.button(@"取消").cancelStyle();
     } showFrom:self];
 }
 
@@ -328,11 +328,11 @@
     
     [FLEXAlert makeAlert:^(FLEXAlert *make) {
         if (result.isError) {
-            make.title(@"Error");
+            make.title(@"错误");
         }
         
-        make.message(result.message ?: @"<no output>");
-        make.button(@"Dismiss").cancelStyle().handler(^(NSArray<NSString *> *_) {
+        make.message(result.message ?: @"<无输出>");
+        make.button(@"关闭").cancelStyle().handler(^(NSArray<NSString *> *_) {
             if (completion) {
                 completion(!result.isError);
             }

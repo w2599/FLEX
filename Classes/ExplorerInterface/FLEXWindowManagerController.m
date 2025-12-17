@@ -32,9 +32,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"Windows";
+    self.title = @"窗口";
     if (@available(iOS 13, *)) {
-        self.title = @"Windows and Scenes";
+        self.title = @"窗口与场景";
     }
     
     [self disableToolbar];
@@ -87,14 +87,14 @@
     }
     
     [FLEXAlert makeAlert:^(FLEXAlert *make) {
-        make.title(@"Keep Changes?");
-        make.message(@"If you do not wish to keep these settings, choose 'Revert Changes' below.");
+        make.title(@"保留更改？");
+        make.message(@"如果你不想保留这些设置，请在下面选择“恢复更改”。");
         
-        make.button(@"Keep Changes").destructiveStyle();
-        make.button(@"Keep Changes and Dismiss").destructiveStyle().handler(^(NSArray<NSString *> *strings) {
+        make.button(@"保留更改").destructiveStyle();
+        make.button(@"保留更改并关闭").destructiveStyle().handler(^(NSArray<NSString *> *strings) {
             [self dismissAnimated];
         });
-        make.button(@"Revert Changes").cancelStyle().handler(^(NSArray<NSString *> *strings) {
+        make.button(@"恢复更改").cancelStyle().handler(^(NSArray<NSString *> *strings) {
             revertBlock();
             [self reloadData];
             [self.tableView reloadData];
@@ -227,20 +227,20 @@
                     
                     if (isWindowScene) {
                         if (isFLEXScene) {
-                            make.message(@"Already the FLEX window scene");
+                            make.message(@"已是 FLEX 窗口场景");
                         }
                         
-                        make.button(@"Set as FLEX Window Scene")
+                        make.button(@"设为 FLEX 窗口场景")
                         .handler(^(NSArray<NSString *> *strings) {
                             flex.windowScene = (id)scene;
                             [self showRevertOrDismissAlert:^{
                                 flex.windowScene = oldScene;
                             }];
                         }).enabled(!isFLEXScene);
-                        make.button(@"Cancel").cancelStyle();
+                        make.button(@"取消").cancelStyle();
                     } else {
-                        make.message(@"Not a UIWindowScene");
-                        make.button(@"Dismiss").cancelStyle().handler(cancelHandler);
+                        make.message(@"不是 UIWindowScene");
+                        make.button(@"关闭").cancelStyle().handler(cancelHandler);
                     }
                 } showFrom:self];
             }
@@ -250,34 +250,29 @@
     __block UIWindowLevel oldLevel;
     __block BOOL wasVisible;
     
-    subtitle = [subtitle stringByAppendingString:
-        @"\n\n1) Adjust the FLEX window level relative to this window,\n"
-        "2) adjust this window's level relative to the FLEX window,\n"
-        "3) set this window's level to a specific value, or\n"
-        "4) make this window the key window if it isn't already."
-    ];
+    subtitle = [subtitle stringByAppendingString:@"\n\n1) 调整 FLEX 窗口相对于此窗口的层级,\n2) 调整此窗口相对于 FLEX 窗口的层级,\n3) 将此窗口层级设置为特定值, 或\n4) 如果不是主窗口则将其设为主窗口。"]; 
     
     [FLEXAlert makeAlert:^(FLEXAlert *make) {
         make.title(NSStringFromClass(window.class)).message(subtitle);
-        make.button(@"Adjust FLEX Window Level").handler(^(NSArray<NSString *> *strings) {
+        make.button(@"调整 FLEX 窗口层级").handler(^(NSArray<NSString *> *strings) {
             targetWindow = flex; oldLevel = flex.windowLevel;
             flex.windowLevel = window.windowLevel + strings.firstObject.integerValue;
             
             [self showRevertOrDismissAlert:^{ targetWindow.windowLevel = oldLevel; }];
         });
-        make.button(@"Adjust This Window's Level").handler(^(NSArray<NSString *> *strings) {
+        make.button(@"调整此窗口的层级").handler(^(NSArray<NSString *> *strings) {
             targetWindow = window; oldLevel = window.windowLevel;
             window.windowLevel = flex.windowLevel + strings.firstObject.integerValue;
             
             [self showRevertOrDismissAlert:^{ targetWindow.windowLevel = oldLevel; }];
         });
-        make.button(@"Set This Window's Level").handler(^(NSArray<NSString *> *strings) {
+        make.button(@"设置此窗口的层级").handler(^(NSArray<NSString *> *strings) {
             targetWindow = window; oldLevel = window.windowLevel;
             window.windowLevel = strings.firstObject.integerValue;
             
             [self showRevertOrDismissAlert:^{ targetWindow.windowLevel = oldLevel; }];
         });
-        make.button(@"Make Key And Visible").handler(^(NSArray<NSString *> *strings) {
+        make.button(@"设为主窗口并可见").handler(^(NSArray<NSString *> *strings) {
             oldKeyWindow = UIApplication.sharedApplication.keyWindow;
             wasVisible = window.hidden;
             [window makeKeyAndVisible];
@@ -287,9 +282,9 @@
                 [oldKeyWindow makeKeyWindow];
             }];
         }).enabled(!window.isKeyWindow && !window.hidden);
-        make.button(@"Cancel").cancelStyle().handler(cancelHandler);
+        make.button(@"取消").cancelStyle().handler(cancelHandler);
         
-        make.textField(@"+/- window level, i.e. 5 or -10");
+        make.textField(@"+/- 窗口层级，例如 5 或 -10");
     } showFrom:self];
 }
 

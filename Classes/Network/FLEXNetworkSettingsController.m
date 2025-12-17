@@ -120,18 +120,15 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     switch (section) {
-        case 0: return @"General";
-        case 1: return @"Host Denylist";
+        case 0: return @"常规";
+        case 1: return @"主机黑名单";
         default: return nil;
     }
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
     if (section == 0) {
-        return @"By default, JSON is rendered in a webview. Turn on "
-        "\"View JSON as a dictionary/array\" to convert JSON payloads "
-        "to objects and view them in an object explorer. "
-        "This setting requires a restart of the app.";
+        return @"By default, JSON is rendered in a webview. Turn on \"View JSON as a dictionary/array\" to convert JSON payloads to objects and view them in an object explorer. This setting requires a restart of the app.";
     }
     
     return nil;
@@ -150,19 +147,19 @@
         case 0: {
             switch (indexPath.row) {
                 case 0:
-                    cell.textLabel.text = @"Network Debugging";
+                    cell.textLabel.text = @"网络调试";
                     cell.accessoryView = self.observerSwitch;
                     break;
                 case 1:
-                    cell.textLabel.text = @"Cache Media Responses";
+                    cell.textLabel.text = @"缓存媒体响应";
                     cell.accessoryView = self.cacheMediaSwitch;
                     break;
                 case 2:
-                    cell.textLabel.text = @"View JSON as a dictionary/array";
+                    cell.textLabel.text = @"将 JSON 视为字典/数组";
                     cell.accessoryView = self.jsonViewerSwitch;
                     break;
                 case 3:
-                    cell.textLabel.text = @"Reset Host Denylist";
+                    cell.textLabel.text = @"重置主机黑名单";
                     cell.textLabel.textColor = tableView.tintColor;
                     break;
                 case 4:
@@ -220,9 +217,9 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     [FLEXAlert makeAlert:^(FLEXAlert *make) {
-        make.title(@"Reset Host Denylist");
-        make.message(@"You cannot undo this action. Are you sure?");
-        make.button(@"Reset").destructiveStyle().handler(^(NSArray<NSString *> *strings) {
+        make.title(@"重置主机黑名单");
+        make.message(@"此操作无法撤销。你确定吗？");
+        make.button(@"重置").destructiveStyle().handler(^(NSArray<NSString *> *strings) {
             self.hostDenylist = nil;
             [FLEXNetworkRecorder.defaultRecorder.hostDenylist removeAllObjects];
             [FLEXNetworkRecorder.defaultRecorder synchronizeDenylist];
@@ -230,7 +227,7 @@
                 [NSIndexSet indexSetWithIndex:1]
             withRowAnimation:UITableViewRowAnimationAutomatic];
         });
-        make.button(@"Cancel").cancelStyle();
+        make.button(@"取消").cancelStyle();
     } showFrom:self];
 }
 

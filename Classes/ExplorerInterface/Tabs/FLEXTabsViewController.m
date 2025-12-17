@@ -38,7 +38,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"Open Tabs";
+    self.title = @"打开标签页";
     self.navigationController.hidesBarsOnSwipe = NO;
     self.tableView.allowsMultipleSelectionDuringEditing = YES;
     self.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentAutomatic;
@@ -121,12 +121,12 @@
 - (void)setupEditingBarItems {
     self.navigationItem.rightBarButtonItem = nil;
     self.toolbarItems = @[
-        [UIBarButtonItem flex_itemWithTitle:@"Close All" target:self action:@selector(closeAllButtonPressed:)],
+        [UIBarButtonItem flex_itemWithTitle:@"全部关闭" target:self action:@selector(closeAllButtonPressed:)],
         UIBarButtonItem.flex_flexibleSpace,
         [UIBarButtonItem flex_disabledSystemItem:UIBarButtonSystemItemAdd],
         UIBarButtonItem.flex_flexibleSpace,
         // We use a non-system done item because we change its title dynamically
-        [UIBarButtonItem flex_doneStyleitemWithTitle:@"Done" target:self action:@selector(toggleEditing)]
+        [UIBarButtonItem flex_doneStyleitemWithTitle:@"完成" target:self action:@selector(toggleEditing)]
     ];
     
     self.toolbarItems.firstObject.tintColor = FLEXColor.destructiveColor;
@@ -196,18 +196,18 @@
 - (void)addTabButtonPressed:(UIBarButtonItem *)sender {
     if (FLEXBookmarkManager.bookmarks.count) {
         [FLEXAlert makeSheet:^(FLEXAlert *make) {
-            make.title(@"New Tab");
-            make.button(@"Main Menu").handler(^(NSArray<NSString *> *strings) {
+            make.title(@"新标签页");
+            make.button(@"主菜单").handler(^(NSArray<NSString *> *strings) {
                 [self addTabAndDismiss:[FLEXNavigationController
                     withRootViewController:[FLEXGlobalsViewController new]
                 ]];
             });
-            make.button(@"Choose from Bookmarks").handler(^(NSArray<NSString *> *strings) {
+            make.button(@"从书签选择").handler(^(NSArray<NSString *> *strings) {
                 [self presentViewController:[FLEXNavigationController
                     withRootViewController:[FLEXBookmarksViewController new]
                 ] animated:YES completion:nil];
             });
-            make.button(@"Cancel").cancelStyle();
+            make.button(@"取消").cancelStyle();
         } showFrom:self source:sender];
     } else {
         // No bookmarks, just open the main menu
@@ -233,7 +233,7 @@
             [self closeAll];
             [self toggleEditing];
         });
-        make.button(@"Cancel").cancelStyle();
+        make.button(@"取消").cancelStyle();
     } showFrom:self source:sender];
 }
 
@@ -289,7 +289,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (self.editing) {
         // Case: editing with multi-select
-        self.toolbarItems.lastObject.title = @"Close Selected";
+        self.toolbarItems.lastObject.title = @"关闭所选";
         self.toolbarItems.lastObject.tintColor = FLEXColor.destructiveColor;
     } else {
         if (self.activeIndex == indexPath.row && self.corePresenter != self.presentingViewController) {
@@ -309,7 +309,7 @@
     NSParameterAssert(self.editing);
     
     if (tableView.indexPathsForSelectedRows.count == 0) {
-        self.toolbarItems.lastObject.title = @"Done";
+        self.toolbarItems.lastObject.title = @"完成";
         self.toolbarItems.lastObject.tintColor = self.view.tintColor;
     }
 }

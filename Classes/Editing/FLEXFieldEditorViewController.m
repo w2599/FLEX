@@ -34,14 +34,14 @@
 
 + (instancetype)target:(id)target property:(nonnull FLEXProperty *)property commitHandler:(void(^)(void))onCommit {
     FLEXFieldEditorViewController *editor = [self target:target data:property commitHandler:onCommit];
-    editor.title = [@"Property: " stringByAppendingString:property.name];
+    editor.title = [@"属性：" stringByAppendingString:property.name];
     editor.property = property;
     return editor;
 }
 
 + (instancetype)target:(id)target ivar:(nonnull FLEXIvar *)ivar commitHandler:(void(^)(void))onCommit {
     FLEXFieldEditorViewController *editor = [self target:target data:ivar commitHandler:onCommit];
-    editor.title = [@"Ivar: " stringByAppendingString:ivar.name];
+    editor.title = [@"实例变量：" stringByAppendingString:ivar.name];
     editor.ivar = ivar;
     return editor;
 }
@@ -76,7 +76,7 @@
     // Don't show a "set" button for switches; we mutate when the switch is flipped
     if ([inputView isKindOfClass:[FLEXArgumentInputSwitchView class]]) {
         self.actionButton.enabled = NO;
-        self.actionButton.title = @"Flip the switch to call the setter";
+        self.actionButton.title = @"使用开关来调用 setter";
         // Put getter button before setter button 
         self.toolbarItems = @[
             UIBarButtonItem.flex_flexibleSpace, self.actionButton, self.getterButton
@@ -92,7 +92,7 @@
         NSError *error = nil;
         [FLEXRuntimeUtility performSelector:setterSelector onObject:self.target withArguments:arguments error:&error];
         if (error) {
-            [FLEXAlert showAlert:@"Property Setter Failed" message:error.localizedDescription from:self];
+            [FLEXAlert showAlert:@"属性设置失败" message:error.localizedDescription from:self];
             sender = nil; // Don't pop back
         }
     } else {

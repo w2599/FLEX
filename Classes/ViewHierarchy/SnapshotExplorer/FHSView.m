@@ -209,7 +209,7 @@
     @try {
         view.hidden = hidden;
     } @catch (NSException *exception) {
-        NSString *hidingOrUnhiding = hidden ? @"hiding" : @"unhiding";
+        NSString *hidingOrUnhiding = hidden ? @"隐藏" : @"显示";
         NSLog(@"Exception raised when %@ view %@: %@", hidingOrUnhiding, view, exception);
     }
 }

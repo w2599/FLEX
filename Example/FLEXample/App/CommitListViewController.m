@@ -43,7 +43,7 @@
 
 - (void)showCustomView {
     UIAlertController *alert = [FLEXAlert makeAlert:^(FLEXAlert *make) {
-        make.title(@"Custom View").button(@"Dismiss").cancelStyle();
+        make.title(@"自定义视图").button(@"关闭").cancelStyle();
     }];
     
     // I like to use this to easily display and interact with custom views I'm working on
@@ -56,7 +56,7 @@
     
     _avatars = [NSMutableDictionary new];
     
-    self.title = @"FLEX Commit History";
+    self.title = @"FLEX 提交历史";
     self.showsSearchBar = YES;
     self.navigationItem.rightBarButtonItem = [UIBarButtonItem
         flex_itemWithTitle:@"FLEX" target:FLEXManager.sharedManager action:@selector(toggleExplorer)
@@ -64,7 +64,7 @@
     self.navigationItem.rightBarButtonItem.accessibilityIdentifier = @"toggle-explorer";
     
     self.navigationItem.leftBarButtonItem = [UIBarButtonItem
-        flex_itemWithTitle:@"Test" target:self action:@selector(showCustomView)
+        flex_itemWithTitle:@"测试" target:self action:@selector(showCustomView)
     ];
     
     // Load and process commits
@@ -74,7 +74,7 @@
             self.commits.list = [Commit commitsFrom:data];
             [self fadeInNewRows];
         } else {
-            [FLEXAlert showAlert:@"Error"
+            [FLEXAlert showAlert:@"错误"
                 message:error.localizedDescription ?: @(statusCode).stringValue
                 from:self
             ];
@@ -91,7 +91,7 @@
                 explorerViewControllerForObject:Person.bob
             ]];
         } completion:nil];
-    } description:@"Present an object explorer for debugging"];
+    } description:@"呈现用于调试的对象资源管理器"];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

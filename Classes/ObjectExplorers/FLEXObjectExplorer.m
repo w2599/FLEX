@@ -128,7 +128,7 @@
 
         if (!description.length) {
             NSString *address = [FLEXUtility addressOfObject:self.object];
-            return [NSString stringWithFormat:@"Object at %@ returned empty description", address];
+            return [NSString stringWithFormat:@"对象位于 %@ 返回了空描述", address];
         }
         
         if (description.length > 10000) {
@@ -222,11 +222,11 @@
         // This would greatly reduce the laziness that has begun to manifest itself here
         [_allInstanceSizes addObject:[FLEXStaticMetadata
             style:FLEXStaticMetadataRowStyleKeyValue
-            title:@"Instance Size" number:@(class_getInstanceSize(cls))
+            title:@"实例大小" number:@(class_getInstanceSize(cls))
         ]];
         [_allImageNames addObject:[FLEXStaticMetadata
             style:FLEXStaticMetadataRowStyleDefault
-            title:@"Image Name" string:@(class_getImageName(cls) ?: "Created at Runtime")
+            title:@"镜像名称" string:@(class_getImageName(cls) ?: "运行时创建")
         ]];
     }
     

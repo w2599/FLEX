@@ -31,7 +31,7 @@ NSAssert(!self._action, @"Cannot mutate action after retreiving underlying UIAle
 
 + (void)showAlert:(NSString *)title message:(NSString *)message from:(UIViewController *)viewController {
     [self makeAlert:^(FLEXAlert *make) {
-        make.title(title).message(message).button(@"Dismiss").cancelStyle();
+        make.title(title).message(message).button(@"关闭").cancelStyle();
     } showFrom:viewController];
 }
 

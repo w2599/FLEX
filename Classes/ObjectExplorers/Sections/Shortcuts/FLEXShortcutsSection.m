@@ -109,7 +109,7 @@
         _cacheSubtitles = cacheSubtitles;
         [self reloadData];
     } else {
-        NSLog(@"Warning: setting 'cacheSubtitles' on a shortcut section with static subtitles");
+        NSLog(@"警告：对具有静态副标题的快捷指令分区设置 'cacheSubtitles'");
     }
 }
 
@@ -129,7 +129,7 @@
 
     NSAssert(
         self.allTitles.count == self.allSubtitles.count,
-        @"Each title needs a (possibly empty) subtitle"
+        @"每个标题都需要（可以为空）的副标题"
     );
 
     if (filterText.length) {
@@ -178,7 +178,7 @@
 }
 
 - (NSString *)title {
-    return @"Shortcuts";
+    return @"快捷指令";
 }
 
 - (NSInteger)numberOfRows {
@@ -392,7 +392,7 @@ typedef NSMutableDictionary<Class, NSMutableArray<id<FLEXRuntimeMetadata>> *> Re
 }
 
 - (FLEXShortcutsFactoryNames)properties {
-    NSAssert(!_notInstance, @"Do not try to set properties+classProperties at the same time");
+    NSAssert(!_notInstance, @"不要同时设置 properties 与 classProperties");
     return SetParamBlock(_properties);
 }
 
@@ -406,7 +406,7 @@ typedef NSMutableDictionary<Class, NSMutableArray<id<FLEXRuntimeMetadata>> *> Re
 }
 
 - (FLEXShortcutsFactoryNames)methods {
-    NSAssert(!_notInstance, @"Do not try to set methods+classMethods at the same time");
+    NSAssert(!_notInstance, @"不要同时设置 methods 与 classMethods");
     return SetParamBlock(_methods);
 }
 
@@ -421,7 +421,7 @@ typedef NSMutableDictionary<Class, NSMutableArray<id<FLEXRuntimeMetadata>> *> Re
             ( self->_append && !self->_prepend && !self->_replace) ||
             (!self->_append &&  self->_prepend && !self->_replace) ||
             (!self->_append && !self->_prepend &&  self->_replace),
-            @"You can only do one of [append, prepend, replace]"
+            @"只能选择其中之一：[追加, 前置, 替换]"
         );
 
         
@@ -436,7 +436,7 @@ typedef NSMutableDictionary<Class, NSMutableArray<id<FLEXRuntimeMetadata>> *> Re
         
         if (instanceMetadata) {
             NSAssert(!isMeta,
-                @"Instance metadata can only be added as an instance shortcut"
+                @"实例元数据只能作为实例快捷指令添加"
             );
         }
         
@@ -468,7 +468,7 @@ typedef NSMutableDictionary<Class, NSMutableArray<id<FLEXRuntimeMetadata>> *> Re
         }
 
         if (self->_ivars) {
-            NSAssert(instanceMetadata, @"Instance metadata can only be added as an instance shortcut (%@)", cls);
+            NSAssert(instanceMetadata, @"实例元数据只能作为实例快捷指令添加 (%@)", cls);
             NSArray *items = [self->_ivars flex_mapped:^id(NSString *name, NSUInteger idx) {
                 return [FLEXIvar named:name onClass:clsForMetadata];
             }];

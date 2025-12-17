@@ -12,11 +12,11 @@
 - (NSString *)flex_styleName {
     switch (self.style) {
         case UIAlertActionStyleDefault:
-            return @"Default style";
+            return @"默认样式";
         case UIAlertActionStyleCancel:
-            return @"Cancel style";
+            return @"取消样式";
         case UIAlertActionStyleDestructive:
-            return @"Destructive style";
+            return @"破坏性样式";
             
         default:
             return [NSString stringWithFormat:@"Unknown (%@)", @(self.style)];

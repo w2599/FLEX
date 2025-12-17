@@ -62,7 +62,7 @@
         target:nil action:nil
     ];
     UIBarButtonItem *pasteItem = [[UIBarButtonItem alloc]
-        initWithTitle:@"Paste" style:UIBarButtonItemStyleDone
+        initWithTitle:@"粘贴" style:UIBarButtonItemStyleDone
         target:self.inputTextView action:@selector(paste:)
     ];
     UIBarButtonItem *doneItem = [[UIBarButtonItem alloc]

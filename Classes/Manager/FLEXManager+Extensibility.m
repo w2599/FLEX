@@ -118,49 +118,49 @@
 - (void)registerDefaultSimulatorShortcuts {
     [self registerDefaultSimulatorShortcutWithKey:@"f" modifiers:0 action:^{
         [self toggleExplorer];
-    } description:@"Toggle FLEX toolbar"];
+    } description:@"切换FLEX工具栏"];
 
     [self registerDefaultSimulatorShortcutWithKey:@"g" modifiers:0 action:^{
         [self showExplorerIfNeeded];
         [self.explorerViewController toggleMenuTool];
-    } description:@"Toggle FLEX globals menu"];
+    } description:@"切换FLEX全局菜单"];
 
     [self registerDefaultSimulatorShortcutWithKey:@"v" modifiers:0 action:^{
         [self showExplorerIfNeeded];
         [self.explorerViewController toggleViewsTool];
-    } description:@"Toggle view hierarchy menu"];
+    } description:@"切换视图层级菜单"];
 
     [self registerDefaultSimulatorShortcutWithKey:@"s" modifiers:0 action:^{
         [self showExplorerIfNeeded];
         [self.explorerViewController toggleSelectTool];
-    } description:@"Toggle select tool"];
+    } description:@"切换选择工具"];
 
     [self registerDefaultSimulatorShortcutWithKey:@"m" modifiers:0 action:^{
         [self showExplorerIfNeeded];
         [self.explorerViewController toggleMoveTool];
-    } description:@"Toggle move tool"];
+    } description:@"切换移动工具"];
 
     [self registerDefaultSimulatorShortcutWithKey:@"n" modifiers:0 action:^{
         [self toggleTopViewControllerOfClass:[FLEXNetworkMITMViewController class]];
-    } description:@"Toggle network history view"];
+    } description:@"切换网络历史记录视图"];
 
     [self registerDefaultSimulatorShortcutWithKey:UIKeyInputDownArrow modifiers:0 action:^{
         if (self.isHidden || ![self.explorerViewController handleDownArrowKeyPressed]) {
             [self tryScrollDown];
         }
-    } description:@"Cycle view selection\n\t\tMove view down\n\t\tScroll down"];
+    } description:@"循环视图选择\n\t\t向下移动视图\n\t\t向下滚动"];
 
     [self registerDefaultSimulatorShortcutWithKey:UIKeyInputUpArrow modifiers:0 action:^{
         if (self.isHidden || ![self.explorerViewController handleUpArrowKeyPressed]) {
             [self tryScrollUp];
         }
-    } description:@"Cycle view selection\n\t\tMove view up\n\t\tScroll up"];
+    } description:@"循环视图选择\n\t\t向上移动视图\n\t\t向上滚动"];
 
     [self registerDefaultSimulatorShortcutWithKey:UIKeyInputRightArrow modifiers:0 action:^{
         if (!self.isHidden) {
             [self.explorerViewController handleRightArrowKeyPressed];
         }
-    } description:@"Move selected view right"];
+    } description:@"向右移动选中的视图"];
 
     [self registerDefaultSimulatorShortcutWithKey:UIKeyInputLeftArrow modifiers:0 action:^{
         if (self.isHidden) {
@@ -168,19 +168,19 @@
         } else {
             [self.explorerViewController handleLeftArrowKeyPressed];
         }
-    } description:@"Move selected view left"];
+    } description:@"向左移动选中的视图"];
 
     [self registerDefaultSimulatorShortcutWithKey:@"?" modifiers:0 action:^{
         [self toggleTopViewControllerOfClass:[FLEXKeyboardHelpViewController class]];
-    } description:@"Toggle (this) help menu"];
+    } description:@"切换（此）帮助菜单"];
 
     [self registerDefaultSimulatorShortcutWithKey:UIKeyInputEscape modifiers:0 action:^{
         [[self.topViewController presentingViewController] dismissViewControllerAnimated:YES completion:nil];
-    } description:@"End editing text\n\t\tDismiss top view controller"];
+    } description:@"结束编辑文本\n\t\t关闭顶层视图控制器"];
 
     [self registerDefaultSimulatorShortcutWithKey:@"o" modifiers:UIKeyModifierCommand|UIKeyModifierShift action:^{
         [self toggleTopViewControllerOfClass:[FLEXFileBrowserController class]];
-    } description:@"Toggle file browser menu"];
+    } description:@"切换文件浏览器菜单"];
 }
 
 + (void)load {

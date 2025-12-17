@@ -117,7 +117,7 @@
 
     if (!success) {
         [FLEXAlert makeAlert:^(FLEXAlert *make) {
-            make.title(@"Error Deleting Item");
+            make.title(@"删除项目出错");
             make.message(error.localizedDescription);
         } showFrom:self];
     }
@@ -128,48 +128,48 @@
 
 - (void)trashPressed:(UIBarButtonItem *)sender {
     [FLEXAlert makeSheet:^(FLEXAlert *make) {
-        make.title(@"Clear Keychain");
-        make.message(@"This will remove all keychain items for this app.\n");
-        make.message(@"This action cannot be undone. Are you sure?");
-        make.button(@"Yes, clear the keychain").destructiveStyle().handler(^(NSArray *strings) {
+        make.title(@"清除钥匙串");
+        make.message(@"这将移除此应用的所有钥匙串项。\\n");
+        make.message(@"此操作无法撤销。你确定吗？");
+        make.button(@"是的，清空钥匙串").destructiveStyle().handler(^(NSArray *strings) {
             [self confirmClearKeychain];
         });
-        make.button(@"Cancel").cancelStyle();
+        make.button(@"取消").cancelStyle();
     } showFrom:self source:sender];
 }
 
 - (void)confirmClearKeychain {
     [FLEXAlert makeAlert:^(FLEXAlert *make) {
-        make.title(@"ARE YOU SURE?");
-        make.message(@"This action CANNOT BE UNDONE.\nAre you sure you want to continue?\n");
-        make.message(@"If you're sure, scroll to confirm.");
-        make.button(@"Yes, clear the keychain").destructiveStyle().handler(^(NSArray *strings) {
+        make.title(@"你确定吗？");
+        make.message(@"此操作无法撤销。\\n你确定要继续吗？\\n");
+        make.message(@"如果确定，请滚动以确认。");
+        make.button(@"是的，清空钥匙串").destructiveStyle().handler(^(NSArray *strings) {
             for (id account in self.section.list) {
                 [self deleteItem:account];
             }
 
             [self reloadData];
         });
-        make.button(@"Cancel"); make.button(@"Cancel"); make.button(@"Cancel"); make.button(@"Cancel");
-        make.button(@"Cancel"); make.button(@"Cancel"); make.button(@"Cancel"); make.button(@"Cancel");
-        make.button(@"Cancel"); make.button(@"Cancel"); make.button(@"Cancel"); make.button(@"Cancel");
-        make.button(@"Cancel"); make.button(@"Cancel"); make.button(@"Cancel"); make.button(@"Cancel");
-        make.button(@"Cancel").cancelStyle();
+        make.button(@"取消"); make.button(@"取消"); make.button(@"取消"); make.button(@"取消");
+        make.button(@"取消"); make.button(@"取消"); make.button(@"取消"); make.button(@"取消");
+        make.button(@"取消"); make.button(@"取消"); make.button(@"取消"); make.button(@"取消");
+        make.button(@"取消"); make.button(@"取消"); make.button(@"取消"); make.button(@"取消");
+        make.button(@"取消").cancelStyle();
     } showFrom:self];
 }
 
 - (void)addPressed {
     [FLEXAlert makeAlert:^(FLEXAlert *make) {
-        make.title(@"Add Keychain Item");
-        make.textField(@"Service name, i.e. Instagram");
-        make.textField(@"Account");
-        make.textField(@"Password");
-        make.button(@"Cancel").cancelStyle();
-        make.button(@"Save").handler(^(NSArray<NSString *> *strings) {
+        make.title(@"添加钥匙串项");
+        make.textField(@"服务名称，例如 Instagram");
+        make.textField(@"账户");
+        make.textField(@"密码");
+        make.button(@"取消").cancelStyle();
+        make.button(@"保存").handler(^(NSArray<NSString *> *strings) {
             // Display errors
             NSError *error = nil;
             if (![FLEXKeychain setPassword:strings[2] forService:strings[0] account:strings[1] error:&error]) {
-                [FLEXAlert showAlert:@"Error" message:error.localizedDescription from:self];
+                [FLEXAlert showAlert:@"错误" message:error.localizedDescription from:self];
             }
 
             [self reloadData];
@@ -181,7 +181,7 @@
 #pragma mark - FLEXGlobalsEntry
 
 + (NSString *)globalsEntryTitle:(FLEXGlobalsRow)row {
-    return @"🔑  Keychain";
+    return @"🔑  钥匙串";
 }
 
 + (UIViewController *)globalsEntryViewController:(FLEXGlobalsRow)row {
@@ -230,21 +230,21 @@
     
     [FLEXAlert makeAlert:^(FLEXAlert *make) {
         make.title(query.service);
-        make.message(@"Service: ").message(query.service);
-        make.message(@"\nAccount: ").message(query.account);
-        make.message(@"\nPassword: ").message(query.password);
-        make.message(@"\nGroup: ").message(query.accessGroup);
+        make.message(@"服务：").message(query.service);
+        make.message(@"\\n账号：").message(query.account);
+        make.message(@"\\n密码：").message(query.password);
+        make.message(@"\\n分组：").message(query.accessGroup);
 
-        make.button(@"Copy Service").handler(^(NSArray<NSString *> *strings) {
+        make.button(@"复制服务").handler(^(NSArray<NSString *> *strings) {
             [UIPasteboard.generalPasteboard flex_copy:query.service];
         });
-        make.button(@"Copy Account").handler(^(NSArray<NSString *> *strings) {
+        make.button(@"复制账号").handler(^(NSArray<NSString *> *strings) {
             [UIPasteboard.generalPasteboard flex_copy:query.account];
         });
-        make.button(@"Copy Password").handler(^(NSArray<NSString *> *strings) {
+        make.button(@"复制密码").handler(^(NSArray<NSString *> *strings) {
             [UIPasteboard.generalPasteboard flex_copy:query.password];
         });
-        make.button(@"Dismiss").cancelStyle();
+        make.button(@"关闭").cancelStyle();
         
     } showFrom:self];
 

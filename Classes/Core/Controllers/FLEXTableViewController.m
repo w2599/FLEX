@@ -93,7 +93,7 @@ CGFloat const kFLEXDebounceForExpensiveIO = 0.5;
     if (showsSearchBar) {
         UIViewController *results = self.searchResultsController;
         self.searchController = [[UISearchController alloc] initWithSearchResultsController:results];
-        self.searchController.searchBar.placeholder = @"Filter";
+        self.searchController.searchBar.placeholder = @"筛选";
         self.searchController.searchResultsUpdater = (id)self;
         self.searchController.delegate = (id)self;
         if (@available(iOS 9.1, *)) {

@@ -38,7 +38,7 @@ static const NSInteger kFLEXLiveObjectsSortBySizeIndex = 2;
     self.activatesSearchBarAutomatically = YES;
     self.searchBarDebounceInterval = kFLEXDebounceInstant;
     self.showsCarousel = YES;
-    self.carousel.items = @[@"A→Z", @"Count", @"Size"];
+    self.carousel.items = @[@"A→Z", @"数量", @"大小"];
     
     self.refreshControl = [UIRefreshControl new];
     [self.refreshControl addTarget:self action:@selector(refreshControlDidRefresh:) forControlEvents:UIControlEventValueChanged];
@@ -114,9 +114,9 @@ static const NSInteger kFLEXLiveObjectsSortBySizeIndex = 2;
     }
     
     if (filteredCount == totalCount) {
-        // Unfiltered
+        // 未筛选
         self.headerTitle = [NSString
-            stringWithFormat:@"%@ objects, %@",
+            stringWithFormat:@"%@ 个对象，%@",
             @(totalCount), [NSByteCountFormatter
                 stringFromByteCount:totalSize
                 countStyle:NSByteCountFormatterCountStyleFile
@@ -124,7 +124,7 @@ static const NSInteger kFLEXLiveObjectsSortBySizeIndex = 2;
         ];
     } else {
         self.headerTitle = [NSString
-            stringWithFormat:@"%@ of %@ objects, %@",
+            stringWithFormat:@"%@ / %@ 个对象，%@",
             @(filteredCount), @(totalCount), [NSByteCountFormatter
                 stringFromByteCount:filteredSize
                 countStyle:NSByteCountFormatterCountStyleFile
@@ -137,7 +137,7 @@ static const NSInteger kFLEXLiveObjectsSortBySizeIndex = 2;
 #pragma mark - FLEXGlobalsEntry
 
 + (NSString *)globalsEntryTitle:(FLEXGlobalsRow)row {
-    return @"💩  Heap Objects";
+    return @"💩  堆对象";
 }
 
 + (UIViewController *)globalsEntryViewController:(FLEXGlobalsRow)row {
@@ -197,7 +197,7 @@ static const NSInteger kFLEXLiveObjectsSortBySizeIndex = 2;
 
 - (UITableViewCell *)tableView:(__kindof UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView
-        dequeueReusableCellWithIdentifier:kFLEXDefaultCell
+        dequeueReusableCellWithIdentifier:kFLEXDetailCell
         forIndexPath:indexPath
     ];
 
@@ -206,13 +206,15 @@ static const NSInteger kFLEXLiveObjectsSortBySizeIndex = 2;
     NSNumber *size = self.instanceSizesForClassNames[className];
     unsigned long totalSize = count.unsignedIntegerValue * size.unsignedIntegerValue;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    cell.textLabel.text = [NSString stringWithFormat:@"%@ (%ld, %@)",
-        className, (long)[count integerValue],
-        [NSByteCountFormatter
-            stringFromByteCount:totalSize
-            countStyle:NSByteCountFormatterCountStyleFile
-        ]
-    ];
+
+    NSString *sizeString = [NSByteCountFormatter stringFromByteCount:totalSize countStyle:NSByteCountFormatterCountStyleFile];
+    for (NSString *target in @[@" 字节", @" bytes"]) {
+        sizeString = [sizeString stringByReplacingOccurrencesOfString:target withString:@" B"];
+    }
+
+    // Use the title and subtitle labels so the count and size don't shift the main title layout.
+    cell.textLabel.text = className;
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"(%ld) %@", (long)[count integerValue], sizeString];
     
     return cell;
 }

@@ -81,7 +81,7 @@
 
 - (NSArray<UIMenuElement *> *)menuItemsForRow:(NSInteger)row sender:(UIViewController *)sender API_AVAILABLE(ios(13.0)) {
     NSArray<NSString *> *copyItems = [self copyMenuItemsForRow:row];
-    NSAssert(copyItems.count % 2 == 0, @"copyMenuItemsForRow: should return an even list");
+    NSAssert(copyItems.count % 2 == 0, @"copyMenuItemsForRow：应返回一个偶数长度的列表");
     
     if (copyItems.count) {
         NSInteger numberOfActions = copyItems.count / 2;
@@ -92,7 +92,7 @@
         
         for (NSInteger i = 0; i < copyItems.count; i += 2) {
             NSString *key = copyItems[i], *value = copyItems[i+1];
-            NSString *title = collapseMenu ? key : [@"Copy " stringByAppendingString:key];
+            NSString *title = collapseMenu ? key : [@"复制 " stringByAppendingString:key];
             
             UIAction *copy = [UIAction
                 actionWithTitle:title
@@ -110,7 +110,7 @@
         }
         
         UIMenu *copyMenu = [UIMenu
-            flex_inlineMenuWithTitle:@"Copy…" 
+            flex_inlineMenuWithTitle:@"复制…" 
             image:copyIcon
             children:actions
         ];

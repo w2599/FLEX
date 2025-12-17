@@ -140,7 +140,7 @@ FLEXObjectExplorerDefaultsImpl
         // Action for exploring class of this property
         Class propertyClass = self.attributes.typeEncoding.flex_typeClass;
         if (propertyClass) {
-            NSString *title = [NSString stringWithFormat:@"Explore %@", NSStringFromClass(propertyClass)];
+            NSString *title = [NSString stringWithFormat:@"探索 %@", NSStringFromClass(propertyClass)];
             [actions addObject:[UIAction actionWithTitle:title image:nil identifier:nil handler:^(UIAction *action) {
                 UIViewController *explorer = [FLEXObjectExplorerFactory explorerViewControllerForObject:propertyClass];
                 [sender.navigationController pushViewController:explorer animated:YES];
@@ -152,7 +152,7 @@ FLEXObjectExplorerDefaultsImpl
             // Since the property holder is not nil, check if the property value is nil
             id value = [self currentValueBeforeUnboxingWithTarget:object];
             if (value) {
-                NSString *title = @"List all references";
+                NSString *title = @"列出所有引用";
                 [actions addObject:[UIAction actionWithTitle:title image:nil identifier:nil handler:^(UIAction *action) {
                     UIViewController *list = [FLEXObjectListViewController
                         objectsWithReferencesToObject:value
@@ -174,26 +174,26 @@ FLEXObjectExplorerDefaultsImpl
     BOOL targetNotNil = [self appropriateTargetForPropertyType:object] != nil;
     
     NSMutableArray *items = [NSMutableArray arrayWithArray:@[
-        @"Name",                      self.name ?: @"",
-        @"Type",                      self.attributes.typeEncoding ?: @"",
-        @"Declaration",               self.fullDescription ?: @"",
+        @"名称",                      self.name ?: @"",
+        @"类型",                      self.attributes.typeEncoding ?: @"",
+        @"声明",                      self.fullDescription ?: @"",
     ]];
     
     if (targetNotNil) {
         id value = [self currentValueBeforeUnboxingWithTarget:object];
-        [items addObjectsFromArray:@[
-            @"Value Preview",         [self previewWithTarget:object] ?: @"",
-            @"Value Address",         returnsObject ? [FLEXUtility addressOfObject:value] : @"",
+            [items addObjectsFromArray:@[
+            @"值预览",                 [self previewWithTarget:object] ?: @"",
+            @"值地址",                 returnsObject ? [FLEXUtility addressOfObject:value] : @"",
         ]];
     }
     
     [items addObjectsFromArray:@[
-        @"Getter",                    NSStringFromSelector(self.likelyGetter) ?: @"",
-        @"Setter",                    self.likelySetterExists ? NSStringFromSelector(self.likelySetter) : @"",
-        @"Image Name",                self.imageName ?: @"",
-        @"Attributes",                self.attributes.string ?: @"",
-        @"objc_property",             [FLEXUtility pointerToString:self.objc_property],
-        @"objc_property_attribute_t", [FLEXUtility pointerToString:self.attributes.list],
+        @"获取器",                    NSStringFromSelector(self.likelyGetter) ?: @"",
+        @"设置器",                    self.likelySetterExists ? NSStringFromSelector(self.likelySetter) : @"",
+        @"镜像名",                    self.imageName ?: @"",
+        @"属性",                      self.attributes.string ?: @"",
+        @"objc_属性",             [FLEXUtility pointerToString:self.objc_property],
+        @"objc_属性特性", [FLEXUtility pointerToString:self.attributes.list],
     ]];
     
     return items;
@@ -245,13 +245,13 @@ FLEXObjectExplorerDefaultsImpl
 }
 
 - (UIViewController *)viewerWithTarget:(id)object {
-    NSAssert(!object_isClass(object), @"Unreachable state: viewing ivar on class object");
+    NSAssert(!object_isClass(object), @"不可达状态：在类对象上查看实例变量");
     id value = [self currentValueWithTarget:object];
     return [FLEXObjectExplorerFactory explorerViewControllerForObject:value];
 }
 
 - (UIViewController *)editorWithTarget:(id)object section:(FLEXTableViewSection *)section {
-    NSAssert(!object_isClass(object), @"Unreachable state: editing ivar on class object");
+    NSAssert(!object_isClass(object), @"无法到达的状态：在类对象上编辑实例变量");
     return [FLEXFieldEditorViewController target:object ivar:self commitHandler:^{
         [section reloadData:YES];
     }];
@@ -289,7 +289,7 @@ FLEXObjectExplorerDefaultsImpl
     
     // "Explore PropertyClass" for properties with a concrete class name
     if (ivarClass) {
-        NSString *title = [NSString stringWithFormat:@"Explore %@", NSStringFromClass(ivarClass)];
+        NSString *title = [NSString stringWithFormat:@"探索 %@", NSStringFromClass(ivarClass)];
         return @[[UIAction actionWithTitle:title image:nil identifier:nil handler:^(UIAction *action) {
             UIViewController *explorer = [FLEXObjectExplorerFactory explorerViewControllerForObject:ivarClass];
             [sender.navigationController pushViewController:explorer animated:YES];
@@ -305,21 +305,21 @@ FLEXObjectExplorerDefaultsImpl
     id value = isInstance ? [self getValue:object] : nil;
     
     NSMutableArray *items = [NSMutableArray arrayWithArray:@[
-        @"Name",          self.name ?: @"",
-        @"Type",          self.typeEncoding ?: @"",
-        @"Declaration",   self.description ?: @"",
+        @"名称",          self.name ?: @"",
+        @"类型",          self.typeEncoding ?: @"",
+        @"声明",          self.description ?: @"",
     ]];
     
     if (isInstance) {
         [items addObjectsFromArray:@[
-            @"Value Preview", isInstance ? [self previewWithTarget:object] : @"",
-            @"Value Address", returnsObject ? [FLEXUtility addressOfObject:value] : @"",
+            @"值预览",         isInstance ? [self previewWithTarget:object] : @"",
+            @"值地址",         returnsObject ? [FLEXUtility addressOfObject:value] : @"",
         ]];
     }
-    
+
     [items addObjectsFromArray:@[
-        @"Size",          @(self.size).stringValue,
-        @"Offset",        @(self.offset).stringValue,
+        @"大小",           @(self.size).stringValue,
+        @"偏移",           @(self.offset).stringValue,
         @"objc_ivar",     [FLEXUtility pointerToString:self.objc_ivar],
     ]];
     
@@ -384,9 +384,9 @@ FLEXObjectExplorerDefaultsImpl
 
 - (NSArray<NSString *> *)copiableMetadataWithTarget:(id)object {
     return @[
-        @"Selector",      self.name ?: @"",
-        @"Type Encoding", self.typeEncoding ?: @"",
-        @"Declaration",   self.description ?: @"",
+        @"选择器",        self.name ?: @"",
+        @"类型编码",      self.typeEncoding ?: @"",
+        @"声明",          self.description ?: @"",
     ];
 }
 
@@ -423,11 +423,11 @@ FLEXObjectExplorerDefaultsImpl
 
 - (NSArray<NSString *> *)copiableMetadataWithTarget:(id)object {
     return [[super copiableMetadataWithTarget:object] arrayByAddingObjectsFromArray:@[
-        @"NSMethodSignature *", [FLEXUtility addressOfObject:self.signature],
-        @"Signature String",    self.signatureString ?: @"",
-        @"Number of Arguments", @(self.numberOfArguments).stringValue,
-        @"Return Type",         @(self.returnType ?: ""),
-        @"Return Size",         @(self.returnSize).stringValue,
+        @"方法签名指针",       [FLEXUtility addressOfObject:self.signature],
+        @"签名字符串",         self.signatureString ?: @"",
+        @"参数数量",           @(self.numberOfArguments).stringValue,
+        @"返回类型",           self.returnType ? [NSString stringWithUTF8String:(char *)self.returnType] : @"",
+        @"返回大小",           @(self.returnSize).stringValue,
         @"objc_method",       [FLEXUtility pointerToString:self.objc_method],
     ]];
 }
@@ -479,8 +479,8 @@ FLEXObjectExplorerDefaultsImpl
     NSArray<NSString *> *conformanceNames = [self.protocols valueForKeyPath:@"name"];
     NSString *conformances = [conformanceNames componentsJoinedByString:@"\n"];
     return @[
-        @"Name",         self.name ?: @"",
-        @"Conformances", conformances ?: @"",
+        @"名称",          self.name ?: @"",
+        @"遵从",          conformances ?: @"",
     ];
 }
 
@@ -622,8 +622,8 @@ FLEXObjectExplorerDefaultsImpl
 
 - (NSArray<NSString *> *)copiableMetadataWithTarget:(id)object {
     return @[
-        @"Class Name", self.name,
-        @"Class", [FLEXUtility addressOfObject:self.metadata]
+        @"类名", self.name,
+        @"类", [FLEXUtility addressOfObject:self.metadata]
     ];
 }
 

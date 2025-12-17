@@ -121,11 +121,11 @@ static NSMutableDictionary<id<NSCopying>, Class> *classesToRegisteredSections = 
         case FLEXGlobalsRowKeyWindow:
             return @"🔑  Key Window";
         case FLEXGlobalsRowRootViewController:
-            return @"🌴  Root View Controller";
+            return @"🌴  根视图控制器";
         case FLEXGlobalsRowProcessInfo:
-            return @"🚦  NSProcessInfo.processInfo";
+            return @"🚦  进程信息";
         case FLEXGlobalsRowUserDefaults:
-            return @"💾  Preferences";
+            return @"💾  偏好设置";
         case FLEXGlobalsRowMainBundle:
             return @"📦  NSBundle.mainBundle";
         case FLEXGlobalsRowApplication:
@@ -247,7 +247,7 @@ static NSMutableDictionary<id<NSCopying>, Class> *classesToRegisteredSections = 
                     ];
                     [host.navigationController pushViewController:explorer animated:YES];
                 } else {
-                    NSString *msg = @"The app delegate doesn't respond to -window";
+                    NSString *msg = @"应用程序委托未响应 -window 方法";
                     [FLEXAlert showAlert:@":(" message:msg from:host];
                 }
             };

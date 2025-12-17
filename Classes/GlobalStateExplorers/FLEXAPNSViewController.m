@@ -244,7 +244,7 @@ static NSError *_apnsRegistrationError = nil;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"Push Notifications";
+    self.title = @"推送通知";
     
     self.refreshControl = [UIRefreshControl new];
     [self.refreshControl addTarget:self action:@selector(reloadData) forControlEvents:UIControlEventValueChanged];
@@ -259,22 +259,22 @@ static NSError *_apnsRegistrationError = nil;
 }
 
 - (NSArray<FLEXTableViewSection *> *)makeSections {
-    self.deviceToken = [FLEXSingleRowSection title:@"APNS Device Token" reuse:nil cell:^(UITableViewCell *cell) {
+    self.deviceToken = [FLEXSingleRowSection title:@"APNS 设备令牌" reuse:nil cell:^(UITableViewCell *cell) {
         NSString *tokenString = FLEXAPNSViewController.deviceTokenString;
         if (tokenString) {
             cell.textLabel.text = tokenString;
             cell.textLabel.numberOfLines = 0;
         }
         else if (!NSUserDefaults.standardUserDefaults.flex_enableAPNSCapture) {
-            cell.textLabel.text = @"APNS capture disabled";
+            cell.textLabel.text = @"APNS 捕获已禁用";
         }
         else {
-            cell.textLabel.text = @"Not yet registered";
+            cell.textLabel.text = @"尚未注册";
         }
     }];
     self.deviceToken.selectionAction = ^(UIViewController *host) {
         UIPasteboard.generalPasteboard.string = FLEXAPNSViewController.deviceTokenString;
-        [FLEXAlert showQuickAlert:@"Copied to Clipboard" from:host];
+        [FLEXAlert showQuickAlert:@"已复制到剪贴板" from:host];
     };
     
     // Remote Notifications //
@@ -317,7 +317,7 @@ static NSError *_apnsRegistrationError = nil;
             }
         ];
         
-        self.userNotifications.customTitle = @"Push Notifications";
+        self.userNotifications.customTitle = @"推送通知";
         self.userNotifications.selectionHandler = ^(UIViewController *host, UNNotification *notif) {
             [host.navigationController pushViewController:[
                 FLEXObjectExplorerFactory explorerViewControllerForObject:notif.request
@@ -335,7 +335,7 @@ static NSError *_apnsRegistrationError = nil;
     [self.refreshControl endRefreshing];
     
     self.remoteNotifications.customTitle = [NSString stringWithFormat:
-        @"%@ notifications", @(self.remoteNotifications.filteredList.count)
+        @"%@ 条通知", @(self.remoteNotifications.filteredList.count)
     ];
     [super reloadData];
 }
@@ -344,25 +344,25 @@ static NSError *_apnsRegistrationError = nil;
     NSUserDefaults *defaults = NSUserDefaults.standardUserDefaults;
     BOOL enabled = defaults.flex_enableAPNSCapture;
 
-    NSString *apnsToggle = enabled ? @"Disable Capture" : @"Enable Capture";
+    NSString *apnsToggle = enabled ? @"禁用捕获" : @"启用捕获";
     
     [FLEXAlert makeAlert:^(FLEXAlert *make) {
-        make.title(@"Settings")
-            .message(@"Enable or disable the capture of push notifications.\n\n")
-            .message(@"This will hook UIApplicationMain on launch until it is disabled, ")
-            .message(@"and swizzle some app delegate methods. Restart the app for changes to take effect.");
-        
+        make.title(@"设置")
+            .message(@"启用或禁用推送通知的捕获。\\n\\n")
+            .message(@"这将在启动时挂钩 UIApplicationMain，直到它被禁用，")
+            .message(@"并交换一些应用委托方法。请重启应用以使更改生效。");
+
         make.button(apnsToggle).destructiveStyle().handler(^(NSArray<NSString *> *strings) {
             [defaults flex_toggleBoolForKey:kFLEXDefaultsAPNSCaptureEnabledKey];
         });
-        make.button(@"Dismiss").cancelStyle();
+        make.button(@"关闭").cancelStyle();
     } showFrom:self];
 }
 
 #pragma mark - FLEXGlobalsEntry
 
 + (NSString *)globalsEntryTitle:(FLEXGlobalsRow)row {
-    return @"📌  Push Notifications";
+    return @"📌  推送通知";
 }
 
 + (UIViewController *)globalsEntryViewController:(FLEXGlobalsRow)row {

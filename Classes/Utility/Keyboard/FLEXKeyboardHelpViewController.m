@@ -31,7 +31,7 @@
     self.textView.font = [UIFont boldSystemFontOfSize:14.0];
     self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
     
-    self.title = @"Simulator Shortcuts";
+    self.title = @"模拟器快捷键";
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(donePressed:)];
 }
 

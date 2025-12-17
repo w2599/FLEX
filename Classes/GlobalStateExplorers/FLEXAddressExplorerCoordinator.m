@@ -23,16 +23,14 @@
 #pragma mark - FLEXGlobalsEntry
 
 + (NSString *)globalsEntryTitle:(FLEXGlobalsRow)row {
-    return @"🔎  Address Explorer";
+    return @"🔎  地址探索器";
 }
 
 + (FLEXGlobalsEntryRowAction)globalsEntryRowAction:(FLEXGlobalsRow)row {
     return ^(UITableViewController *host) {
 
-        NSString *title = @"Explore Object at Address";
-        NSString *message = @"Paste a hexadecimal address below, starting with '0x'. "
-        "Use the unsafe option if you need to bypass pointer validation, "
-        "but know that it may crash the app if the address is invalid.";
+        NSString *title = @"按地址探索对象";
+        NSString *message = @"在下方粘贴十六进制地址，需以 '0x' 开头。\n如果需要绕过指针校验可使用“不安全探索”，但地址无效可能导致应用崩溃。";
 
         [FLEXAlert makeAlert:^(FLEXAlert *make) {
             make.title(title).message(message);
@@ -45,13 +43,13 @@
                     [textField selectAll:nil];
                 }
             });
-            make.button(@"Explore").handler(^(NSArray<NSString *> *strings) {
+            make.button(@"探索").handler(^(NSArray<NSString *> *strings) {
                 [host tryExploreAddress:strings.firstObject safely:YES];
             });
-            make.button(@"Unsafe Explore").destructiveStyle().handler(^(NSArray *strings) {
+            make.button(@"不安全探索").destructiveStyle().handler(^(NSArray *strings) {
                 [host tryExploreAddress:strings.firstObject safely:NO];
             });
-            make.button(@"Cancel").cancelStyle();
+            make.button(@"取消").cancelStyle();
         } showFrom:host];
 
     };
@@ -76,10 +74,10 @@
 
     if (didParseAddress) {
         if (safely && ![FLEXRuntimeUtility pointerIsValidObjcObject:pointerValue]) {
-            error = @"The given address is unlikely to be a valid object.";
+            error = @"该地址不太可能是有效的对象。";
         }
     } else {
-        error = @"Malformed address. Make sure it's not too long and starts with '0x'.";
+        error = @"地址格式不正确。请确保以 '0x' 开头并且长度合适。";
     }
 
     if (!error) {
@@ -87,7 +85,7 @@
         FLEXObjectExplorerViewController *explorer = [FLEXObjectExplorerFactory explorerViewControllerForObject:object];
         [self.navigationController pushViewController:explorer animated:YES];
     } else {
-        [FLEXAlert showAlert:@"Uh-oh" message:error from:self];
+        [FLEXAlert showAlert:@"出错了" message:error from:self];
         [self deselectSelectedRow];
     }
 }
