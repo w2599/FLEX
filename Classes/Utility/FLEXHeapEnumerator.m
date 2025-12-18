@@ -44,6 +44,12 @@ static void range_callback(task_t task, void *context, unsigned type, vm_range_t
     for (unsigned int i = 0; i < rangeCount; i++) {
         vm_range_t range = ranges[i];
         flex_maybe_object_t *tryObject = (flex_maybe_object_t *)range.address;
+        if (!tryObject) continue;
+        // 过滤低地址
+        if ((uintptr_t)tryObject < 0x100000000) continue;
+        // 过滤tagged pointer（低3位非0）
+        if (((uintptr_t)tryObject & 0x7) != 0) continue;
+
         Class tryClass = NULL;
 #ifdef __arm64__
         // See http://www.sealiesoftware.com/blog/archive/2013/09/24/objc_explain_Non-pointer_isa.html
@@ -53,9 +59,9 @@ static void range_callback(task_t task, void *context, unsigned type, vm_range_t
         tryClass = tryObject->isa;
 #endif
         // If the class pointer matches one in our set of class pointers from the runtime, then we should have an object.
-        if (CFSetContainsValue(registeredClasses, (__bridge const void *)(tryClass))) {
-            (*(flex_object_enumeration_block_t __unsafe_unretained *)context)((__bridge id)tryObject, tryClass);
-        }
+        if (!tryClass) continue;
+        if (!CFSetContainsValue(registeredClasses, (__bridge const void *)(tryClass))) continue;
+        (*(flex_object_enumeration_block_t __unsafe_unretained *)context)((__bridge id)tryObject, tryClass);
     }
 }
 
@@ -97,6 +103,11 @@ static kern_return_t reader(__unused task_t remote_task, vm_address_t remote_add
             // Callback has to unlock the zone so we freely allocate memory inside the given block
             flex_object_enumeration_block_t callback = ^(__unsafe_unretained id object, __unsafe_unretained Class actualClass) {
                 unlock_zone(zone);
+                // 校验指针有效性，防止崩溃
+                if (!FLEXPointerIsValidObjcObject((__bridge void *)object)) {
+                    lock_zone(zone);
+                    return;
+                }
                 block(object, actualClass);
                 lock_zone(zone);
             };

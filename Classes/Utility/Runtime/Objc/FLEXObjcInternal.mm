@@ -155,39 +155,54 @@ BOOL FLEXPointerIsValidObjcObject(const void *ptr) {
     }
 
     // Make sure dereferencing this address won't crash
-    if (!FLEXPointerIsReadable(ptr)) {
-        return NO;
-    }
+    if (!FLEXPointerIsReadable(ptr)) return NO;
 
-    // http://www.sealiesoftware.com/blog/archive/2013/09/24/objc_explain_Non-pointer_isa.html
-    // We check if the returned class is readable because object_getClass
-    // can return a garbage value when given a non-nil pointer to a non-object
-    Class cls = object_getClass((__bridge id)ptr);
-    if (!cls || !FLEXPointerIsReadable((__bridge void *)cls)) {
-        return NO;
-    }
-    
-    // Just because this pointer is readable doesn't mean whatever is at
-    // it's ISA offset is readable. We need to do the same checks on it's ISA.
-    // Even this isn't perfect, because once we call object_isClass, we're
-    // going to dereference a member of the metaclass, which may or may not
-    // be readable itself. For the time being there is no way to access it
-    // to check here, and I have yet to hard-code a solution.
-    Class metaclass = object_getClass(cls);
-    if (!metaclass || !FLEXPointerIsReadable((__bridge void *)metaclass)) {
-        return NO;
-    }
-    
+    // Instead of calling object_getClass on ptr (which may crash for non-objects),
+    // read the ISA word directly and validate it conservatively.
+    uintptr_t isaWord = 0;
+    vm_size_t readSize = 0;
+#if __arm64e__
+    vm_address_t isaAddress = (vm_address_t)ptrauth_strip(ptr, ptrauth_key_function_pointer);
+#else
+    vm_address_t isaAddress = (vm_address_t)ptr;
+#endif
+    kern_return_t err = vm_read_overwrite(mach_task_self(), isaAddress, sizeof(uintptr_t), (vm_address_t)&isaWord, &readSize);
+    if (err != KERN_SUCCESS || readSize != sizeof(uintptr_t)) return NO;
+
+#if __arm64__
+    extern uint64_t objc_debug_isa_class_mask WEAK_IMPORT_ATTRIBUTE;
+    uintptr_t isaCandidate = (uintptr_t)(isaWord & objc_debug_isa_class_mask);
+#else
+    uintptr_t isaCandidate = isaWord;
+#endif
+    Class cls = (__bridge Class)(void *)(uintptr_t)isaCandidate;
+    if (!cls) return NO;
+    if (!FLEXPointerIsReadable((__bridge const void *)cls)) return NO;
+
+    // Read metaclass (isa of cls) similarly
+    uintptr_t metaIsaWord = 0;
+#if __arm64e__
+    vm_address_t clsIsaAddress = (vm_address_t)ptrauth_strip((__bridge const void *)cls, ptrauth_key_function_pointer);
+#else
+    vm_address_t clsIsaAddress = (vm_address_t)(__bridge const void *)cls;
+#endif
+    err = vm_read_overwrite(mach_task_self(), clsIsaAddress, sizeof(uintptr_t), (vm_address_t)&metaIsaWord, &readSize);
+    if (err != KERN_SUCCESS || readSize != sizeof(uintptr_t)) return NO;
+#if __arm64__
+    uintptr_t metaIsaCandidate = (uintptr_t)(metaIsaWord & objc_debug_isa_class_mask);
+#else
+    uintptr_t metaIsaCandidate = metaIsaWord;
+#endif
+    Class metaclass = (__bridge Class)(void *)(uintptr_t)metaIsaCandidate;
+    if (!metaclass) return NO;
+    if (!FLEXPointerIsReadable((__bridge const void *)metaclass)) return NO;
+
     // Does the class pointer we got appear as a class to the runtime?
-    if (!object_isClass(cls)) {
-        return NO;
-    }
-    
+    if (!object_isClass(cls)) return NO;
+
     // Is the allocation size at least as large as the expected instance size?
     ssize_t instanceSize = class_getInstanceSize(cls);
-    if (malloc_size(ptr) < instanceSize) {
-        return NO;
-    }
+    if (malloc_size(ptr) < instanceSize) return NO;
 
     return YES;
 }
